@@ -1,0 +1,61 @@
+---
+import Photo from '../components/Photo.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPhoto } from '../lib/photos';
+import { link } from '../lib/url';
+
+const photo = getPhoto('image00046.jpeg');
+---
+
+<BaseLayout title="Page introuvable — Niveal Studio" description="Cette page n’existe pas ou plus." noindex>
+  <section class="lost container">
+    <div class="lost__media">
+      <Photo photo={photo} sizes="(min-width: 48em) 30vw, 60vw" priority />
+    </div>
+    <div class="lost__text">
+      <p class="eyebrow">Erreur 404</p>
+      <h1 class="display lost__title">Cette page <em>s’est éclipsée.</em></h1>
+      <p class="lead lost__lead">L’adresse est peut-être incomplète, ou la page a changé de place.</p>
+      <ul class="lost__links">
+        <li><a class="cta-link" href={link('/')}>Revenir à l’accueil</a></li>
+        <li><a class="cta-link" href={link('/portfolio/')}>Voir le portfolio</a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost {
+    display: grid;
+    gap: var(--space-l);
+    align-items: center;
+    padding-block: var(--space-xl) var(--space-2xl);
+  }
+
+  .lost__media {
+    width: min(60%, 22rem);
+  }
+
+  .lost__title {
+    margin-block: var(--space-m);
+    font-size: clamp(2.4rem, 1.4rem + 4vw, 5.5rem);
+  }
+
+  .lost__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2.5rem;
+    margin-top: var(--space-l);
+  }
+
+  @media (min-width: 48em) {
+    .lost {
+      grid-template-columns: 4fr 7fr;
+      gap: var(--space-xl);
+    }
+
+    .lost__media {
+      width: 100%;
+    }
+  }
+</style>

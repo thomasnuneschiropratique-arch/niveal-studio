@@ -30,7 +30,7 @@ export const SITE = {
   city: 'Toulouse',
   region: 'Occitanie',
   description:
-    'Anna Aguerre, photographe de mariage à Toulouse et dans le Sud-Ouest. Une approche documentaire et fine art, discrète du début à la fin. Destination weddings partout ailleurs.',
+    'Anna Aguerre, photographe de mariage à Toulouse et dans le Sud-Ouest : une approche documentaire et fine art, discrète du début à la fin.',
   instagram: {
     url: 'https://www.instagram.com/nivealstudio',
     handle: '@nivealstudio',

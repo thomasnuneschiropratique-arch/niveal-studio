@@ -4,9 +4,10 @@ dist/
 .astro/
 .astro-cache/
 
-# Système
+# Système et éditeurs
 .DS_Store
 Thumbs.db
+.claude/
 
 # Journaux et variables locales
 *.log

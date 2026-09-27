@@ -149,7 +149,7 @@ const detailsPhoto = getPhoto('image00042.jpeg');
                   <span class="caps day__word">{c.label}</span>
                   <span class="day__count">{c.photos.length} photos</span>
                   <span class="day__thumb" aria-hidden="true">
-                    <Photo photo={c.coverPhoto} sizes="4.5rem" alt="" cover />
+                    <Photo photo={c.coverPhoto} sizes="4.5rem" cover />
                   </span>
                 </a>
               </li>
@@ -161,7 +161,7 @@ const detailsPhoto = getPhoto('image00042.jpeg');
           {
             chapters.map((c, i) => (
               <div class:list={['day__img', { 'is-active': i === 0 }]} data-day-img={i}>
-                <Photo photo={c.coverPhoto} sizes="(min-width: 1700px) 420px, 25vw" alt="" cover />
+                <Photo photo={c.coverPhoto} sizes="(min-width: 1700px) 420px, 25vw" cover />
               </div>
             ))
           }
@@ -305,6 +305,21 @@ const detailsPhoto = getPhoto('image00042.jpeg');
         rgb(10 9 8 / 0.16) 56%,
         rgb(10 9 8 / 0) 72%
       );
+  }
+
+  /* Mobile : une seule photo, claire, derrière le titre → voile un peu plus dense. */
+  @media (max-width: 47.99em) {
+    .hero__shade {
+      background:
+        linear-gradient(180deg, rgb(10 9 8 / 0.42) 0%, rgb(10 9 8 / 0) 22%),
+        linear-gradient(
+          0deg,
+          rgb(10 9 8 / 0.8) 0%,
+          rgb(10 9 8 / 0.58) 34%,
+          rgb(10 9 8 / 0.2) 58%,
+          rgb(10 9 8 / 0) 74%
+        );
+    }
   }
 
   .hero__content {
@@ -697,7 +712,7 @@ const detailsPhoto = getPhoto('image00042.jpeg');
 
   .day__link {
     display: grid;
-    grid-template-columns: 2.25rem 1fr auto;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
     align-items: center;
     column-gap: clamp(0.75rem, 2vw, 2rem);
     padding-block: clamp(1rem, 2.4vw, 2rem);
@@ -712,7 +727,8 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   }
 
   .day__word {
-    font-size: clamp(1.85rem, 0.9rem + 5.2vw, 8.6rem);
+    /* sur mobile, le mot le plus long (« Préparatifs ») doit tenir avec sa vignette */
+    font-size: clamp(1.4rem, 7.2vw, 4.5rem);
     letter-spacing: 0.06em;
     line-height: 0.95;
     white-space: nowrap;
@@ -732,7 +748,7 @@ const detailsPhoto = getPhoto('image00042.jpeg');
 
   .day__thumb {
     display: block;
-    width: 3.25rem;
+    width: 2.9rem;
     aspect-ratio: 3 / 4;
     overflow: hidden;
   }
@@ -744,6 +760,10 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   @media (min-width: 64em) {
     .day__link {
       grid-template-columns: 3.5rem 1fr auto;
+    }
+
+    .day__word {
+      font-size: clamp(1.85rem, 0.9rem + 5.2vw, 8.6rem);
     }
 
     .day__count {

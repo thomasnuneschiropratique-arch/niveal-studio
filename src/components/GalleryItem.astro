@@ -1,0 +1,64 @@
+---
+/**
+ * Photo du portfolio : image optimisée + lien vers la visionneuse plein écran.
+ * Sans JavaScript, le lien ouvre simplement la photo en grand.
+ */
+import { optimize, type Photo } from '../lib/photos';
+
+interface Props {
+  photo: Photo;
+  sizes: string;
+  /** Nom du chapitre, affiché dans la visionneuse. */
+  chapter: string;
+  class?: string;
+}
+
+const { photo, sizes, chapter, class: className } = Astro.props;
+const img = await optimize(photo);
+---
+
+<figure class:list={['pf-item', className]} style={`--ratio: ${photo.ratio.toFixed(4)}`} data-reveal="image">
+  <a
+    class="pf-item__link"
+    href={img.jpgSrc}
+    data-lightbox
+    data-srcset={img.webpSrcset}
+    data-width={photo.width}
+    data-height={photo.height}
+    data-chapter={chapter}
+    aria-label={`Agrandir : ${photo.alt}`}
+  >
+    <picture class="photo">
+      <source type="image/webp" srcset={img.webpSrcset} sizes={sizes} />
+      <img
+        src={img.jpgSrc}
+        srcset={img.jpgSrcset}
+        sizes={sizes}
+        width={photo.width}
+        height={photo.height}
+        alt={photo.alt}
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+  </a>
+</figure>
+
+<style>
+  .pf-item__link {
+    display: block;
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+
+  /* Le zoom au survol s'applique au <picture> : l'<img> est déjà animée à l'apparition. */
+  .pf-item__link :global(picture) {
+    transition: scale 1.4s var(--ease);
+  }
+
+  @media (hover: hover) {
+    .pf-item__link:hover :global(picture) {
+      scale: 1.025;
+    }
+  }
+</style>

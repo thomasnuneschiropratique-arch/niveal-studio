@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, isPlaceholder } from '../config';
+
+/*
+ * Mentions légales obligatoires pour un site professionnel (loi LCEN, RGPD).
+ * Les passages entre crochets, surlignés sur la page, sont à compléter
+ * avec les informations officielles d'Anna avant la mise en ligne.
+ */
+const email = isPlaceholder(SITE.email) ? null : SITE.email;
+---
+
+<BaseLayout
+  title="Mentions légales — Niveal Studio"
+  description="Mentions légales et politique de confidentialité du site Niveal Studio, Anna Aguerre, photographe de mariage à Toulouse."
+  noindex
+>
+  <article class="legal container">
+    <h1 class="caps legal__title">Mentions légales</h1>
+
+    <section>
+      <h2 class="eyebrow">Éditeur du site</h2>
+      <p>
+        {SITE.name} — {SITE.photographer}, photographe<br />
+        Statut&nbsp;: <mark>[à compléter, par exemple entrepreneur individuel]</mark><br />
+        SIRET&nbsp;: <mark>[à compléter]</mark><br />
+        Adresse&nbsp;: <mark>[à compléter]</mark>, Toulouse<br />
+        Contact&nbsp;: {email ? <a class="underline" href={`mailto:${email}`}>{email}</a> : <mark>[adresse e-mail]</mark>}
+      </p>
+      <p>Directrice de la publication&nbsp;: {SITE.photographer}.</p>
+    </section>
+
+    <section>
+      <h2 class="eyebrow">Hébergement</h2>
+      <p>
+        Site hébergé par GitHub Pages — GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107,
+        États-Unis.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="eyebrow">Propriété intellectuelle</h2>
+      <p>
+        Les photographies et les textes de ce site sont la propriété exclusive de {SITE.photographer} ({SITE.name}).
+        Toute reproduction, représentation ou diffusion, totale ou partielle, sans autorisation écrite préalable est
+        interdite.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="eyebrow">Données personnelles</h2>
+      <p>
+        Les informations envoyées par le formulaire de contact (nom, prénom, adresse e-mail, date et lieu du mariage,
+        message) servent uniquement à répondre à votre demande. Elles transitent par le service Formspree, ne sont ni
+        vendues ni cédées à des tiers, et sont conservées le temps nécessaire au suivi de votre demande
+        <mark>[durée à préciser, par exemple trois ans après le dernier échange]</mark>.
+      </p>
+      <p>
+        Conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés,
+        vous disposez d’un droit d’accès, de rectification, d’effacement et d’opposition sur vos données. Pour
+        l’exercer, écrivez à {email ? <a class="underline" href={`mailto:${email}`}>{email}</a> : <mark>[adresse e-mail]</mark>}.
+        Vous pouvez également adresser une réclamation à la CNIL (cnil.fr).
+      </p>
+    </section>
+
+    <section>
+      <h2 class="eyebrow">Cookies</h2>
+      <p>
+        Ce site ne dépose aucun cookie publicitaire ni de mesure d’audience. Les polices de caractères sont hébergées
+        sur le site lui-même&nbsp;: aucune donnée n’est transmise à des services tiers pendant votre visite.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: calc(46rem + 2 * var(--gutter));
+    padding-block: var(--space-xl) var(--space-2xl);
+  }
+
+  .legal__title {
+    margin-bottom: var(--space-l);
+    font-size: clamp(2.2rem, 1.4rem + 3.4vw, 4.5rem);
+  }
+
+  .legal section {
+    padding-block: var(--space-m);
+    border-top: 1px solid var(--line);
+  }
+
+  .legal h2 {
+    margin-bottom: 1rem;
+  }
+
+  .legal p {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .legal p + p {
+    margin-top: 0.9em;
+  }
+
+  mark {
+    background: #f3e3b3;
+    color: var(--ink);
+    padding: 0 0.2em;
+  }
+</style>

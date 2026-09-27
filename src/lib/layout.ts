@@ -19,6 +19,7 @@ export type RowType =
   | 'solo-center'
   | 'wide'
   | 'll'
+  | 'll-rev'
   | 'pl'
   | 'lp';
 
@@ -35,6 +36,7 @@ export function buildRows(photos: Photo[]): Row[] {
   const isP = (p?: Photo) => !!p && !p.feature && p.orientation === 'portrait';
   let portraitTurn = 0;
   let landscapeTurn = 0;
+  let pairTurn = 0;
   let i = 0;
 
   while (i < photos.length) {
@@ -48,7 +50,7 @@ export function buildRows(photos: Photo[]): Row[] {
 
     if (a.orientation === 'landscape') {
       if (isL(b)) {
-        rows.push({ type: 'll', photos: [a, b] });
+        rows.push({ type: pairTurn++ % 2 === 0 ? 'll' : 'll-rev', photos: [a, b] });
         i += 2;
       } else if (isP(b) && landscapeTurn++ % 2 === 0) {
         rows.push({ type: 'lp', photos: [a, b] });
@@ -103,6 +105,7 @@ const COLUMNS: Record<RowType, number[]> = {
   'solo-center': [6],
   wide: [10],
   ll: [7, 5],
+  'll-rev': [5, 7],
   pl: [4, 7],
   lp: [7, 4],
 };
@@ -118,6 +121,7 @@ const MOBILE: Record<RowType, number[]> = {
   'solo-center': [100],
   wide: [100],
   ll: [100, 84],
+  'll-rev': [84, 100],
   pl: [66, 100],
   lp: [100, 66],
 };
