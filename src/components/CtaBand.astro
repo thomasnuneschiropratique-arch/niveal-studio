@@ -1,0 +1,93 @@
+---
+/** Bandeau de fin de page : grande photo, accroche et liens. */
+import type { Photo as PhotoData } from '../lib/photos';
+import { link } from '../lib/url';
+import Photo from './Photo.astro';
+
+interface Props {
+  photo: PhotoData;
+  position?: string;
+  links?: { href: string; label: string }[];
+}
+
+const {
+  photo,
+  position,
+  links = [
+    { href: '/portfolio/', label: 'Voir le portfolio' },
+    { href: '/contact/', label: 'Me contacter' },
+  ],
+} = Astro.props;
+---
+
+<section class="cta-band" aria-labelledby="cta-band-title">
+  <div class="cta-band__media" data-parallax>
+    <Photo photo={photo} sizes="100vw" cover position={position} />
+  </div>
+  <div class="cta-band__shade" aria-hidden="true"></div>
+  <div class="cta-band__content container">
+    <p class="eyebrow cta-band__eyebrow" data-reveal>Toulouse, Sud-Ouest &amp; ailleurs</p>
+    <h2 id="cta-band-title" class="display cta-band__title" data-reveal style="--delay: 0.1s">
+      <slot name="title">Racontez-moi <em>votre</em> mariage.</slot>
+    </h2>
+    <ul class="cta-band__links" data-reveal style="--delay: 0.2s">
+      {
+        links.map((l) => (
+          <li>
+            <a class="cta-link" href={link(l.href)}>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    position: relative;
+    display: grid;
+    place-items: start center;
+    min-height: clamp(34rem, 92svh, 58rem);
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--white);
+    text-align: center;
+    isolation: isolate;
+  }
+
+  .cta-band__media,
+  .cta-band__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .cta-band__shade {
+    background:
+      radial-gradient(ellipse at center, rgb(10 9 8 / 0.5), rgb(10 9 8 / 0.3) 70%),
+      rgb(10 9 8 / 0.12);
+  }
+
+  .cta-band__content {
+    padding-block: clamp(5rem, 14svh, 9rem) var(--space-xl);
+  }
+
+  .cta-band__eyebrow {
+    margin-bottom: var(--space-m);
+  }
+
+  .cta-band__title {
+    font-size: clamp(2.6rem, 1.4rem + 6vw, 7.25rem);
+    text-wrap: balance;
+  }
+
+  .cta-band__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem clamp(2rem, 5vw, 4rem);
+    margin-top: var(--space-l);
+  }
+</style>

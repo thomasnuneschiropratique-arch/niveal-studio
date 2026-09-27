@@ -1,0 +1,948 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import SectionIndex from '../components/SectionIndex.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+import { getChapters, getPhoto } from '../lib/photos';
+import { link } from '../lib/url';
+
+const hero = {
+  a: getPhoto('mariee-mur-jaune.jpg'),
+  b: getPhoto('image00046.jpeg'),
+};
+
+const approachPhoto = getPhoto('maries-voile-herbe.jpg');
+
+const selection = [
+  'maries-voile-salon-haussmannien.jpg',
+  'couple-decapotable.jpg',
+  'image00059.jpeg',
+  'image00057.jpeg',
+  'image00039.jpeg',
+  'image00021.jpeg',
+].map(getPhoto);
+const selectionSizes = [
+  '(min-width: 1700px) 780px, (min-width: 48em) 47vw, 100vw',
+  '(min-width: 1700px) 520px, (min-width: 48em) 31vw, 84vw',
+  '(min-width: 1700px) 520px, (min-width: 48em) 31vw, 50vw',
+  '(min-width: 1700px) 780px, (min-width: 48em) 47vw, 50vw',
+  '(min-width: 1700px) 1040px, (min-width: 48em) 62vw, 100vw',
+  '(min-width: 1700px) 390px, (min-width: 48em) 24vw, 60vw',
+];
+
+const chapters = getChapters().map((c) => ({ ...c, coverPhoto: getPhoto(c.cover) }));
+const ctaPhoto = getPhoto('image00027.jpeg');
+const detailsPhoto = getPhoto('image00042.jpeg');
+---
+
+<BaseLayout
+  title="Photographe de mariage à Toulouse — Niveal Studio"
+  description={SITE.description}
+  headerOverlay
+>
+  <!-- ============================================================ HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__media">
+      <div class="hero__panel hero__panel--a">
+        <Photo photo={hero.a} sizes="(min-width: 48em) 50vw, 100vw" priority cover position="54% 50%" />
+      </div>
+      <div class="hero__panel hero__panel--b">
+        <Photo photo={hero.b} sizes="50vw" cover position="50% 35%" />
+      </div>
+    </div>
+    <div class="hero__shade" aria-hidden="true"></div>
+
+    <div class="hero__content">
+      <h1 id="hero-title" class="hero__title">
+        <span class="eyebrow hero__kicker">{SITE.photographer} — Photographe de mariage à Toulouse</span>
+        <span class="caps hero__phrase" lang="en">
+          <span class="hero__line" style="--i: 0"><span>Fine art,</span></span>
+          <span class="hero__line" style="--i: 1"><span>with true emotions.</span></span>
+        </span>
+      </h1>
+    </div>
+
+    <a class="hero__scroll" href="#approche">
+      <span class="visually-hidden">Découvrir la suite</span>
+      <span class="hero__scroll-line" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <!-- ===================================================== 01 — APPROCHE -->
+  <section class="approach section" id="approche" aria-labelledby="approach-title">
+    <div class="container approach__grid">
+      <SectionIndex class="approach__index" num="01" label="L’approche" />
+
+      <div class="approach__main">
+        <h2 id="approach-title" class="display approach__statement" lang="en" data-reveal>
+          A shadow to the day, <em>a friend to every guest.</em>
+        </h2>
+
+        <div class="approach__cols">
+          <article class="approach__col" data-reveal>
+            <h3 class="eyebrow approach__label"><span class="approach__roman">i.</span> Approche</h3>
+            <p class="approach__accent" lang="en">Documentary &amp; fine art.</p>
+            <p>Une journée telle qu’elle se vit, avec l’exigence d’une image composée.</p>
+          </article>
+          <article class="approach__col" data-reveal style="--delay: 0.12s">
+            <h3 class="eyebrow approach__label"><span class="approach__roman">ii.</span> Présence</h3>
+            <p>Discrète du début à la fin, proche de chacun de vos invités.</p>
+          </article>
+          <article class="approach__col" data-reveal style="--delay: 0.24s">
+            <h3 class="eyebrow approach__label"><span class="approach__roman">iii.</span> Territoire</h3>
+            <p>
+              Toulouse &amp; <span class="nowrap">Sud-Ouest</span>. <span lang="en">Destination weddings</span> partout ailleurs.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <figure class="approach__figure" data-reveal="image">
+        <Photo photo={approachPhoto} sizes="(min-width: 64em) 22vw, 64vw" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================================================== 02 — SÉLECTION -->
+  <section class="selection" aria-labelledby="selection-title">
+    <div class="container selection__grid">
+      <div class="selection__head">
+        <SectionIndex num="02" label="Sélection" />
+        <h2 id="selection-title" class="display selection__title" data-reveal>
+          Une journée <em>telle qu’elle se vit</em>
+        </h2>
+      </div>
+
+      {
+        selection.map((photo, i) => (
+          <figure class={`selection__item selection__item--${i + 1}`} data-reveal="image">
+            <Photo photo={photo} sizes={selectionSizes[i]} />
+            <figcaption class="selection__caption" aria-hidden="true">
+              <span class="selection__num">N° {String(i + 1).padStart(2, '0')}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+
+      <div class="selection__foot">
+        <a class="cta-link" href={link('/portfolio/')}>Voir tout le portfolio</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== 03 — LA JOURNÉE -->
+  <section class="day theme-dark" aria-labelledby="day-title" data-day>
+    <div class="container">
+      <div class="day__head">
+        <SectionIndex num="03" label="La journée" />
+        <h2 id="day-title" class="display day__title" data-reveal>En quatre <em>temps</em></h2>
+      </div>
+
+      <div class="day__body">
+        <ol class="day__list">
+          {
+            chapters.map((c, i) => (
+              <li class="day__item" data-reveal style={`--delay: ${i * 0.08}s`}>
+                <a class="day__link" href={link(`/portfolio/#${c.id}`)} data-day-link={i}>
+                  <span class="day__num">{c.number}</span>
+                  <span class="caps day__word">{c.label}</span>
+                  <span class="day__count">{c.photos.length} photos</span>
+                  <span class="day__thumb" aria-hidden="true">
+                    <Photo photo={c.coverPhoto} sizes="4.5rem" alt="" cover />
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="day__media" aria-hidden="true">
+          {
+            chapters.map((c, i) => (
+              <div class:list={['day__img', { 'is-active': i === 0 }]} data-day-img={i}>
+                <Photo photo={c.coverPhoto} sizes="(min-width: 1700px) 420px, 25vw" alt="" cover />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== 04 — TÉMOIGNAGES -->
+  <section class="words theme-deep section" aria-labelledby="words-title">
+    <div class="container">
+      <SectionIndex num="04" label="Témoignages" />
+      <h2 id="words-title" class="visually-hidden">Témoignages</h2>
+
+      <div class="words__grid">
+        <figure class="words__photo" data-reveal="image">
+          <Photo photo={detailsPhoto} sizes="(min-width: 64em) 28vw, 70vw" />
+        </figure>
+
+        <div class="words__main">
+          <figure class="quote" data-reveal>
+            <blockquote>
+              <p class="display quote__text">
+                «&nbsp;Ce n’est pas qu’un travail de photographie, <em>c’est de&nbsp;l’art.</em>&nbsp;»
+              </p>
+            </blockquote>
+            <figcaption class="eyebrow quote__author">Lisa &amp; Hugo</figcaption>
+          </figure>
+
+          <details class="more" data-reveal>
+            <summary class="more__summary">
+              <span class="eyebrow">Lire leur témoignage</span>
+              <span class="more__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="more__body prose">
+              <p class="more__first">Tu as un talent phénoménal&nbsp;!</p>
+              <p>
+                On sent vraiment l’amour et les émotions à travers les photos&nbsp;! Elles sont juste magnifiques. Tu as
+                réussi à mettre tout le monde à l’aise, tu es parfaite&nbsp;! On est vraiment heureux d’avoir fait appel à
+                toi.
+              </p>
+              <p>
+                En nos deux noms, merci pour ta présence le jour de notre mariage, et pour les supers photos, que l’on
+                gardera à vie. Ton travail est extraordinaire. De A à Z, tout était génial, tu as beaucoup de bon sens, tu
+                t’es vite imprégnée du lieu, tout était fluide, tu nous as mis à l’aise. On voit que tu aimes vraiment ce
+                que tu fais, tu as énormément de talent.
+              </p>
+              <p>Ce n’est pas qu’un travail de photographie, c’est de l’art.</p>
+              <p>Tu y prends du plaisir et c’est très agréable aussi pour les mariés.</p>
+              <p class="eyebrow more__sign">Lisa &amp; Hugo</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <figure class="quote quote--second" data-reveal>
+        <blockquote>
+          <p>
+            «&nbsp;Les mots ne suffisent pas&nbsp;! Comment vous décrire cette photographe pour lui rendre justice&nbsp;?
+            C’est impossible, mais les photos parlent d’elles-mêmes. Anna met tout le monde à l’aise, que ce soit pour
+            la séance d’engagement ou le mariage, elle est incroyable. Tous mes invités l’ont adorée, les photos sont
+            sublimes, elle sait capturer tous les moments d’émotions tout en restant discrète.&nbsp;»
+          </p>
+        </blockquote>
+        <figcaption class="eyebrow quote__author">Sophie &amp; Luca</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <CtaBand photo={ctaPhoto} position="50% 58%" />
+</BaseLayout>
+
+<script>
+  // Liste « La journée » : la photo suit le chapitre survolé.
+  const section = document.querySelector<HTMLElement>('[data-day]');
+  if (section) {
+    const images = section.querySelectorAll<HTMLElement>('[data-day-img]');
+    const show = (index: string) => {
+      images.forEach((img) => img.classList.toggle('is-active', img.dataset.dayImg === index));
+      section.dataset.active = index;
+    };
+    section.querySelectorAll<HTMLElement>('[data-day-link]').forEach((a) => {
+      const index = a.dataset.dayLink!;
+      a.addEventListener('pointerenter', () => show(index));
+      a.addEventListener('focus', () => show(index));
+    });
+    section.querySelector('.day__list')?.addEventListener('pointerleave', () => delete section.dataset.active);
+  }
+</script>
+
+<style>
+  /* ================================================================ HERO */
+
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 36rem;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--white);
+    isolation: isolate;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .hero__panel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero__panel--b {
+    display: none;
+  }
+
+  @media (min-width: 48em) {
+    .hero__media {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .hero__panel--b {
+      display: block;
+    }
+  }
+
+  .hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(180deg, rgb(10 9 8 / 0.42) 0%, rgb(10 9 8 / 0) 24%),
+      linear-gradient(
+        0deg,
+        rgb(10 9 8 / 0.74) 0%,
+        rgb(10 9 8 / 0.5) 30%,
+        rgb(10 9 8 / 0.16) 56%,
+        rgb(10 9 8 / 0) 72%
+      );
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding: var(--header-h) var(--gutter) clamp(5.5rem, 14svh, 9rem);
+    text-align: center;
+  }
+
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__kicker {
+    margin-bottom: clamp(1.25rem, 3svh, 2.25rem);
+  }
+
+  .hero__phrase {
+    display: block;
+    font-size: clamp(2.3rem, 0.9rem + 5.2vw, 6.9rem);
+    font-weight: 430;
+    /* dessin un peu moins contrasté que la taille réelle : déliés plus lisibles sur la photo */
+    font-variation-settings: 'opsz' 56;
+    letter-spacing: 0.12em;
+    line-height: 1.06;
+    /* compense l'espacement ajouté après la dernière lettre */
+    padding-inline-start: 0.12em;
+    text-wrap: balance;
+    text-shadow: 0 0.05em 1.6rem rgb(10 9 8 / 0.35);
+  }
+
+  .hero__line {
+    display: block;
+  }
+
+  .hero__line > span {
+    display: inline-block;
+  }
+
+  .hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    display: block;
+    width: 2.75rem;
+    height: clamp(3rem, 8svh, 4.5rem);
+    translate: -50% 0;
+  }
+
+  .hero__scroll-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.28);
+  }
+
+  .hero__scroll-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--white);
+    transform: translateY(-100%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__panel :global(img) {
+      animation: hero-zoom 2.8s var(--ease) both;
+    }
+
+    .hero__panel--b :global(img) {
+      animation-delay: 0.12s;
+    }
+
+    .hero__kicker {
+      animation: hero-fade 1.6s var(--ease) 0.25s both;
+    }
+
+    .hero__line > span {
+      animation: hero-rise 1.6s var(--ease) both;
+      animation-delay: calc(0.4s + var(--i) * 0.16s);
+    }
+
+    .hero__scroll-line::after {
+      animation: hero-scroll 2.6s var(--ease-in-out) 1.6s infinite;
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero__media {
+        animation: hero-parallax linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100svh;
+      }
+
+      .hero__content {
+        animation: hero-out linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 75svh;
+      }
+    }
+  }
+
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.07);
+    }
+  }
+
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.4em);
+    }
+  }
+
+  @keyframes hero-scroll {
+    0% {
+      transform: translateY(-100%);
+    }
+    55%,
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  @keyframes hero-parallax {
+    to {
+      transform: translateY(20%);
+    }
+  }
+
+  @keyframes hero-out {
+    to {
+      opacity: 0;
+      transform: translateY(-8%);
+    }
+  }
+
+  /* ============================================================ APPROCHE */
+
+  .approach__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: var(--space-l);
+  }
+
+  .approach__index,
+  .approach__main {
+    grid-column: 1 / -1;
+  }
+
+  .approach__figure {
+    grid-column: 5 / -1;
+  }
+
+  .approach__statement {
+    font-size: clamp(2.35rem, 1.2rem + 4.3vw, 5.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  .approach__cols {
+    display: grid;
+    gap: var(--space-l) var(--gap);
+    margin-top: var(--space-xl);
+  }
+
+  .approach__col {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .approach__label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .approach__roman {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-style: italic;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .approach__col p {
+    font-family: var(--serif);
+    font-size: clamp(1.18rem, 1.08rem + 0.4vw, 1.42rem);
+    line-height: 1.42;
+  }
+
+  .approach__col .approach__accent {
+    margin-bottom: 0.4rem;
+    font-style: italic;
+  }
+
+  @media (min-width: 48em) {
+    .approach__cols {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .approach__figure {
+      grid-column: 8 / -1;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .approach__index {
+      grid-column: 1 / span 3;
+      grid-row: 1;
+      align-self: start;
+      padding-top: 1.1rem;
+    }
+
+    .approach__main {
+      grid-column: 5 / -1;
+      grid-row: 1 / span 2;
+    }
+
+    .approach__figure {
+      grid-column: 1 / span 3;
+      grid-row: 2;
+      align-self: end;
+    }
+  }
+
+  /* =========================================================== SÉLECTION */
+
+  .selection {
+    padding-bottom: var(--space-2xl);
+  }
+
+  .selection__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: var(--space-l);
+    align-items: start;
+  }
+
+  .selection__head {
+    grid-column: 1 / -1;
+  }
+
+  .selection__title {
+    margin-top: var(--space-m);
+    font-size: clamp(2.2rem, 1.3rem + 3.6vw, 4.75rem);
+    text-wrap: balance;
+  }
+
+  .selection__caption {
+    margin-top: 0.85rem;
+  }
+
+  .selection__num {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .selection__item--1 {
+    grid-column: 1 / -1;
+  }
+  .selection__item--2 {
+    grid-column: 3 / -1;
+  }
+  .selection__item--3 {
+    grid-column: 1 / span 6;
+  }
+  .selection__item--4 {
+    grid-column: 7 / -1;
+    margin-top: clamp(4rem, 22vw, 12rem);
+  }
+  .selection__item--5 {
+    grid-column: 1 / -1;
+  }
+  .selection__item--6 {
+    grid-column: 6 / -1;
+  }
+
+  .selection__foot {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-m);
+  }
+
+  @media (min-width: 48em) {
+    .selection__head {
+      grid-column: 8 / -1;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .selection__item--1 {
+      grid-column: 1 / span 6;
+      grid-row: 1 / span 2;
+    }
+
+    .selection__item--2 {
+      grid-column: 8 / span 4;
+      grid-row: 2;
+      align-self: end;
+    }
+
+    .selection__item--3 {
+      grid-column: 2 / span 4;
+      grid-row: 3;
+      margin-top: var(--space-xl);
+    }
+
+    .selection__item--4 {
+      grid-column: 7 / span 6;
+      grid-row: 3;
+      margin-top: clamp(8rem, 18vw, 18rem);
+    }
+
+    .selection__item--5 {
+      grid-column: 1 / span 8;
+      grid-row: 4;
+      margin-top: var(--space-xl);
+    }
+
+    .selection__item--6 {
+      grid-column: 10 / span 3;
+      grid-row: 4;
+      align-self: end;
+    }
+
+    .selection__foot {
+      grid-row: 5;
+      justify-content: flex-end;
+    }
+  }
+
+  /* ========================================================= LA JOURNÉE */
+
+  .day {
+    position: relative;
+    padding-block: var(--space-2xl);
+    overflow: hidden;
+  }
+
+  .day__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-m);
+    margin-bottom: var(--space-xl);
+  }
+
+  .day__title {
+    font-size: clamp(2rem, 1.3rem + 2.6vw, 3.6rem);
+  }
+
+  .day__body {
+    position: relative;
+  }
+
+  .day__list {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--on-dark-line);
+  }
+
+  .day__item {
+    border-bottom: 1px solid var(--on-dark-line);
+  }
+
+  .day__link {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr auto;
+    align-items: center;
+    column-gap: clamp(0.75rem, 2vw, 2rem);
+    padding-block: clamp(1rem, 2.4vw, 2rem);
+    transition: opacity 0.5s var(--ease);
+  }
+
+  .day__num {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--on-dark-muted);
+  }
+
+  .day__word {
+    font-size: clamp(1.85rem, 0.9rem + 5.2vw, 8.6rem);
+    letter-spacing: 0.06em;
+    line-height: 0.95;
+    white-space: nowrap;
+    transition:
+      letter-spacing 0.8s var(--ease),
+      opacity 0.5s var(--ease);
+  }
+
+  .day__count {
+    display: none;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+
+  .day__thumb {
+    display: block;
+    width: 3.25rem;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+
+  .day__media {
+    display: none;
+  }
+
+  @media (min-width: 64em) {
+    .day__link {
+      grid-template-columns: 3.5rem 1fr auto;
+    }
+
+    .day__count {
+      display: block;
+    }
+
+    .day__thumb {
+      display: none;
+    }
+
+    [data-active] .day__link {
+      opacity: 0.32;
+    }
+
+    [data-active='0'] [data-day-link='0'],
+    [data-active='1'] [data-day-link='1'],
+    [data-active='2'] [data-day-link='2'],
+    [data-active='3'] [data-day-link='3'] {
+      opacity: 1;
+    }
+
+    .day__link:hover .day__word,
+    .day__link:focus-visible .day__word {
+      letter-spacing: 0.12em;
+    }
+
+    .day__media {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: clamp(4rem, 9vw, 11rem);
+      z-index: 2;
+      width: clamp(15rem, 22vw, 24rem);
+      aspect-ratio: 3 / 4;
+      translate: 0 -50%;
+      pointer-events: none;
+    }
+
+    .day__img {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.04);
+      transition:
+        opacity 0.7s var(--ease),
+        transform 1.2s var(--ease);
+    }
+
+    .day__img.is-active {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ========================================================= TÉMOIGNAGES */
+
+  .words__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: var(--space-l);
+    margin-top: var(--space-xl);
+  }
+
+  .words__photo {
+    grid-column: 3 / -1;
+    grid-row: 2;
+  }
+
+  .words__main {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .quote__text {
+    font-size: clamp(2rem, 1.1rem + 3.6vw, 4.6rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    hanging-punctuation: first;
+  }
+
+  .quote__author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: var(--space-m);
+  }
+
+  .quote__author::before {
+    content: '';
+    width: 2.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .more {
+    margin-top: var(--space-l);
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .more__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .more__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .more__icon {
+    position: relative;
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .more__icon::before,
+  .more__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transition: transform 0.5s var(--ease);
+  }
+
+  .more__icon::after {
+    transform: rotate(90deg);
+  }
+
+  .more[open] .more__icon::after {
+    transform: rotate(0deg);
+  }
+
+  .more__body {
+    padding-bottom: var(--space-m);
+    max-width: 40rem;
+  }
+
+  .more__first {
+    font-style: italic;
+  }
+
+  .more__sign {
+    margin-top: 1.5rem;
+  }
+
+  @supports selector(::details-content) {
+    .more::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition:
+        block-size 0.7s var(--ease),
+        content-visibility 0.7s allow-discrete;
+    }
+
+    .more[open]::details-content {
+      block-size: auto;
+    }
+  }
+
+  .quote--second {
+    max-width: 50rem;
+    margin: var(--space-2xl) auto 0;
+    text-align: center;
+  }
+
+  .quote--second p {
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.6rem);
+    font-style: italic;
+    line-height: 1.55;
+  }
+
+  .quote--second .quote__author {
+    justify-content: center;
+  }
+
+  @media (min-width: 64em) {
+    .words__photo {
+      grid-column: 1 / span 4;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .words__main {
+      grid-column: 6 / -1;
+      grid-row: 1;
+      align-self: start;
+      padding-top: clamp(2rem, 7vw, 7rem);
+    }
+  }
+</style>

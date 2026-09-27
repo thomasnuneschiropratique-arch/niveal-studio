@@ -1,0 +1,360 @@
+---
+import InstagramIcon from '../components/InstagramIcon.astro';
+import Photo from '../components/Photo.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, isPlaceholder } from '../config';
+import { getPhoto } from '../lib/photos';
+import { link } from '../lib/url';
+
+const photo = getPhoto('image00059.jpeg');
+const showEmail = !isPlaceholder(SITE.email);
+const formReady = !isPlaceholder(SITE.formEndpoint);
+---
+
+<BaseLayout
+  title="Contact — Photographe de mariage à Toulouse | Niveal Studio"
+  description="Vous vous mariez ? Racontez à Anna Aguerre, photographe de mariage à Toulouse, votre date, votre lieu et votre histoire."
+>
+  <section class="contact" aria-labelledby="contact-title">
+    <div class="contact__media">
+      <Photo photo={photo} sizes="(min-width: 64em) 42vw, 100vw" priority cover position="50% 40%" />
+    </div>
+
+    <div class="contact__body">
+      <p class="eyebrow">Contact</p>
+      <h1 id="contact-title" class="display contact__title">Racontez-moi <em>votre</em> mariage</h1>
+      <div class="prose contact__intro">
+        <p>
+          Parlez-moi de vous deux, de l’endroit que vous avez choisi, de la journée que vous imaginez. Une date, un lieu,
+          quelques mots&nbsp;: c’est tout ce qu’il faut pour commencer. Chaque message est lu avec attention, et chaque
+          réponse est personnelle.
+        </p>
+      </div>
+
+      <form
+        class="form"
+        action={SITE.formEndpoint}
+        method="POST"
+        novalidate
+        data-contact-form
+        data-ready={formReady ? 'true' : 'false'}
+        data-email={showEmail ? SITE.email : ''}
+      >
+        <input type="hidden" name="_subject" value="Nouvelle demande — Niveal Studio" />
+        <div class="form__grid">
+          <div class="field">
+            <label for="nom">Nom <span class="req" aria-hidden="true">*</span></label>
+            <input id="nom" name="Nom" type="text" autocomplete="family-name" required maxlength="80" aria-describedby="nom-error" />
+            <p class="field__error" id="nom-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="prenom">Prénom <span class="req" aria-hidden="true">*</span></label>
+            <input id="prenom" name="Prénom" type="text" autocomplete="given-name" required maxlength="80" aria-describedby="prenom-error" />
+            <p class="field__error" id="prenom-error" hidden></p>
+          </div>
+          <div class="field field--full">
+            <label for="email">E-mail <span class="req" aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160" aria-describedby="email-error" />
+            <p class="field__error" id="email-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="date">Date du mariage <span class="opt">(facultatif)</span></label>
+            <input id="date" name="Date du mariage" type="date" aria-describedby="date-error" />
+            <p class="field__error" id="date-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="lieu">Lieu du mariage <span class="opt">(facultatif)</span></label>
+            <input id="lieu" name="Lieu du mariage" type="text" maxlength="160" placeholder="Domaine, ville ou région" aria-describedby="lieu-error" />
+            <p class="field__error" id="lieu-error" hidden></p>
+          </div>
+          <div class="field field--full">
+            <label for="message">Message <span class="req" aria-hidden="true">*</span> <span class="opt">(obligatoire)</span></label>
+            <textarea id="message" name="Message" rows="7" required maxlength="5000" aria-describedby="message-error"></textarea>
+            <p class="field__error" id="message-error" hidden></p>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label>Ne pas remplir <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+          </div>
+        </div>
+
+        <p class="form__legend"><span aria-hidden="true">*</span> Champs obligatoires</p>
+        <button class="button form__submit" type="submit">Envoyer ma demande</button>
+        <p class="form__status" role="status" aria-live="polite" data-form-status></p>
+        <p class="form__privacy">
+          Vos coordonnées servent uniquement à vous répondre&nbsp;: elles ne sont ni partagées, ni utilisées à d’autres
+          fins. <a class="underline" href={link('/mentions-legales/')}>Mentions légales</a>
+        </p>
+      </form>
+
+      <div class="contact__aside">
+        <a class="contact__link underline" href={SITE.instagram.url} target="_blank" rel="noopener">
+          <InstagramIcon size={16} />
+          <span>{SITE.instagram.handle}</span>
+        </a>
+        {showEmail && <a class="contact__link underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const field = (id: string) => form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`#${id}`)!;
+    const dateInput = field('date') as HTMLInputElement;
+    const today = new Date().toISOString().slice(0, 10);
+    dateInput.min = today;
+
+    const rules: Record<string, (v: string) => string> = {
+      nom: (v) => (v ? '' : 'Merci d’indiquer votre nom.'),
+      prenom: (v) => (v ? '' : 'Merci d’indiquer votre prénom.'),
+      email: (v) =>
+        !v
+          ? 'Merci d’indiquer votre adresse e-mail.'
+          : /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)
+            ? ''
+            : 'Cette adresse e-mail ne semble pas valide.',
+      date: (v) => (v && v < today ? 'Cette date est déjà passée.' : ''),
+      lieu: (v) => (v.length > 160 ? 'Ce lieu est un peu long (160 caractères maximum).' : ''),
+      message: (v) =>
+        !v
+          ? 'Racontez-moi quelques mots : le message est obligatoire.'
+          : v.length < 10
+            ? 'Votre message est un peu court (10 caractères minimum).'
+            : '',
+    };
+
+    let submitted = false;
+
+    const check = (id: string) => {
+      const input = field(id);
+      const message = rules[id](input.value.trim());
+      const error = form.querySelector<HTMLElement>(`#${id}-error`)!;
+      error.textContent = message;
+      error.hidden = !message;
+      input.toggleAttribute('aria-invalid', Boolean(message));
+      return !message;
+    };
+
+    Object.keys(rules).forEach((id) => {
+      const input = field(id);
+      input.addEventListener('blur', () => submitted && check(id));
+      input.addEventListener('input', () => submitted && check(id));
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      submitted = true;
+      const invalid = Object.keys(rules).filter((id) => !check(id));
+      if (invalid.length) {
+        field(invalid[0]).focus();
+        status.textContent = 'Merci de vérifier les champs indiqués.';
+        return;
+      }
+
+      // Formulaire pas encore relié à Formspree : on ouvre la messagerie du visiteur.
+      if (form.dataset.ready !== 'true') {
+        const to = form.dataset.email;
+        if (!to) {
+          status.textContent =
+            'Le formulaire n’est pas encore configuré. Écrivez-moi en attendant sur Instagram.';
+          return;
+        }
+        const data = new FormData(form);
+        const body = [...data.entries()]
+          .filter(([key]) => !key.startsWith('_'))
+          .map(([key, value]) => `${key} : ${value}`)
+          .join('\n');
+        window.location.href = `mailto:${to}?subject=${encodeURIComponent('Demande — Niveal Studio')}&body=${encodeURIComponent(body)}`;
+        return;
+      }
+
+      submit.disabled = true;
+      status.textContent = 'Envoi en cours…';
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error(String(response.status));
+        form.reset();
+        submitted = false;
+        status.textContent = 'Merci ! Votre message est bien parti. Je vous réponds très vite.';
+        form.classList.add('is-sent');
+      } catch {
+        status.textContent =
+          'Le message n’a pas pu partir. Réessayez dans un instant, ou écrivez-moi sur Instagram.';
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contact__media {
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    background: var(--paper-deep);
+  }
+
+  .contact__body {
+    padding: var(--space-xl) var(--gutter) var(--space-2xl);
+    max-width: 46rem;
+  }
+
+  .contact__title {
+    margin-block: var(--space-m) var(--space-l);
+    font-size: clamp(2.6rem, 1.3rem + 5vw, 5.75rem);
+  }
+
+  .contact__intro {
+    margin-bottom: var(--space-l);
+  }
+
+  .form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-m) var(--gap);
+  }
+
+  .field {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 40em) {
+    .field:not(.field--full) {
+      grid-column: auto;
+    }
+  }
+
+  .field label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .req {
+    color: var(--error);
+  }
+
+  .opt {
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: none;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.6rem 0;
+    border: 0;
+    border-bottom: 1px solid var(--line-strong);
+    border-radius: 0;
+    background: transparent;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    transition: border-color 0.3s;
+  }
+
+  .field textarea {
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--ink);
+  }
+
+  .field [aria-invalid] {
+    border-bottom-color: var(--error);
+  }
+
+  .field__error {
+    color: var(--error);
+    font-size: 0.875rem;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .form__legend {
+    margin-block: var(--space-m);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .form__submit {
+    width: 100%;
+  }
+
+  @media (min-width: 40em) {
+    .form__submit {
+      width: auto;
+    }
+  }
+
+  .form__status {
+    min-height: 1.6em;
+    margin-top: 1rem;
+    font-family: var(--serif);
+    font-style: italic;
+  }
+
+  .form__privacy {
+    margin-top: var(--space-m);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .contact__aside {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    margin-top: var(--space-l);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--line);
+  }
+
+  .contact__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  @media (min-width: 64em) {
+    .contact {
+      grid-template-columns: 5fr 7fr;
+      align-items: start;
+    }
+
+    .contact__media {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      aspect-ratio: auto;
+    }
+
+    .contact__body {
+      padding: clamp(3rem, 9vh, 7rem) clamp(2rem, 6vw, 7rem) var(--space-2xl);
+    }
+  }
+</style>

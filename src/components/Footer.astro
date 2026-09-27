@@ -1,0 +1,162 @@
+---
+import { SITE, isPlaceholder } from '../config';
+import { logoSize } from '../lib/brand';
+import { link } from '../lib/url';
+import InstagramIcon from './InstagramIcon.astro';
+
+const logo = await logoSize();
+const year = new Date().getFullYear();
+const showEmail = !isPlaceholder(SITE.email);
+
+const pages = [
+  { href: '/', label: 'Accueil' },
+  { href: '/a-propos/', label: 'À propos' },
+  { href: '/portfolio/', label: 'Portfolio' },
+  { href: '/contact/', label: 'Contact' },
+];
+---
+
+<footer class="site-footer theme-dark">
+  <div class="container">
+    <div class="site-footer__top">
+      <p class="site-footer__tagline" lang="en">Fine art, <em>with true emotions.</em></p>
+      <a class="cta-link" href={link('/contact/')}>Racontez-moi votre mariage</a>
+    </div>
+
+    <a class="site-footer__logo" href={link('/')} aria-label={`${SITE.name} — accueil`}>
+      <img
+        src={link('/brand/logo-white.png')}
+        width={logo.width}
+        height={logo.height}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+
+    <div class="site-footer__cols">
+      <div class="site-footer__col">
+        <h2 class="eyebrow site-footer__title">Le studio</h2>
+        <p>
+          {SITE.photographer}<br />
+          Photographe de mariage<br />
+          Toulouse &amp; <span class="nowrap">Sud-Ouest</span>
+        </p>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Pied de page">
+        <h2 class="eyebrow site-footer__title">Pages</h2>
+        <ul>
+          {
+            pages.map((p) => (
+              <li>
+                <a class="underline" href={link(p.href)}>
+                  {p.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="site-footer__col">
+        <h2 class="eyebrow site-footer__title">Me suivre</h2>
+        <ul>
+          <li>
+            <a class="site-footer__instagram underline" href={SITE.instagram.url} target="_blank" rel="noopener">
+              <InstagramIcon size={15} />
+              <span>{SITE.instagram.handle}</span>
+            </a>
+          </li>
+          {
+            showEmail && (
+              <li>
+                <a class="underline" href={`mailto:${SITE.email}`}>
+                  {SITE.email}
+                </a>
+              </li>
+            )
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>© {year} {SITE.name} — {SITE.photographer}</p>
+      <a class="underline" href={link('/mentions-legales/')}>Mentions légales</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-m);
+  }
+
+  .site-footer__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-m);
+    padding-bottom: var(--space-l);
+    border-bottom: 1px solid var(--on-dark-line);
+  }
+
+  .site-footer__tagline {
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 1.2rem + 3vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .site-footer__logo {
+    display: block;
+    width: min(100%, 38rem);
+    margin: var(--space-xl) auto;
+  }
+
+  .site-footer__logo img {
+    width: 100%;
+    height: auto;
+  }
+
+  .site-footer__cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--space-l) var(--gap);
+    padding-top: var(--space-l);
+    border-top: 1px solid var(--on-dark-line);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .site-footer__title {
+    margin-bottom: 1rem;
+    color: var(--on-dark-muted);
+  }
+
+  .site-footer__col p {
+    color: var(--paper);
+  }
+
+  .site-footer__instagram {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    margin-top: var(--space-xl);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--on-dark-line);
+    color: var(--on-dark-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+</style>

@@ -1,0 +1,390 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+import { getPhoto } from '../lib/photos';
+
+const portrait = getPhoto('portrait-anna.jpg');
+const fineArtPhoto = getPhoto('image00027.jpeg');
+const emotionsPhoto = getPhoto('couple-baiser-ombrelles.jpg');
+const ctaPhoto = getPhoto('image00062.jpeg');
+
+const fineArt = [
+  'l’esthétique',
+  'la composition',
+  'la lumière',
+  'la direction',
+  'l’élégance',
+  'le souci du détail',
+  'l’image intemporelle',
+];
+const trueEmotions = [
+  'le réel',
+  'la spontanéité',
+  'l’imperfection',
+  'les gestes naturels',
+  'l’intimité',
+  'les émotions sincères',
+  'ce qui ne se met pas en scène',
+];
+---
+
+<BaseLayout
+  title="À propos — Anna Aguerre, photographe de mariage à Toulouse"
+  description="Anna Aguerre, 26 ans, photographe de mariage à Toulouse. De son premier appareil acheté à dix ans à une année à New York auprès de photographes de mode : son histoire."
+>
+  <!-- ============================================================ INTRO -->
+  <section class="about" aria-labelledby="about-title">
+    <div class="about__media">
+      <Photo
+        photo={portrait}
+        sizes="(min-width: 64em) 50vw, 100vw"
+        priority
+        cover
+        position="42% 30%"
+      />
+    </div>
+
+    <div class="about__text">
+      <h1 id="about-title" class="about__title">
+        <span class="eyebrow about__kicker">À propos — {SITE.photographer}, photographe de mariage</span>
+        <span class="caps about__heading">Qui je suis</span>
+      </h1>
+
+      <div class="prose about__prose">
+        <p class="lead about__lead">
+          À dix ans, j’ai acheté mon premier appareil avec mes économies de Noël. Cent soixante euros, mis de côté pièce
+          par pièce, pour un objet que personne autour de moi ne m’avait suggéré d’acheter.
+        </p>
+        <p>
+          Je crois que tout tient là. La photographie n’est pas venue à moi&nbsp;: c’est moi qui l’ai cherchée, et je ne
+          l’ai plus quittée depuis.
+        </p>
+        <p class="about__name display">Je m’appelle Anna, <em>j’ai vingt-six ans.</em></p>
+        <p>
+          J’ai toujours été amoureuse de l’amour. Bien avant de savoir ce que c’était, je regardais les couples avec une
+          curiosité que je n’ai jamais perdue&nbsp;: la façon dont deux personnes se placent l’une par rapport à l’autre,
+          se cherchent des yeux, se répondent sans un mot. Aujourd’hui je le vis à mon tour, et je crois sincèrement que
+          cela change ma manière de photographier&nbsp;: on ne regarde pas de la même façon ce que l’on connaît de
+          l’intérieur.
+        </p>
+        <p>
+          Puis il y a eu les mariages, et quelque chose que je n’avais pas anticipé&nbsp;: la confiance que l’on accorde
+          à celle qui photographie. On me laisse entrer dans les heures les plus intimes d’une vie&nbsp;: le matin, les
+          mots dits tout bas, les larmes que personne d’autre ne voit. Je n’ai jamais pris cela à la légère, et je crois
+          que je ne m’y habituerai pas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= NEW YORK -->
+  <section class="ny theme-dark" aria-labelledby="ny-title">
+    <div class="container">
+      <div class="ny__frame">
+        <h2 id="ny-title" class="ny__title" data-reveal>
+          <span class="caps ny__city">New York,</span>
+          <span class="ny__year">2024</span>
+        </h2>
+
+        <div class="ny__body prose">
+          <p class="lead ny__lead" data-reveal>
+            En 2024, je suis partie vivre un an à New York, dans l’<span lang="en">Upper East Side</span>.
+          </p>
+          <div class="ny__cols" data-reveal>
+            <p>
+              Cette ville ne laisse personne intact. On y croise en une saison ce qu’on mettrait des années à
+              rencontrer ailleurs.
+            </p>
+            <p>
+              J’ai photographié des couples, à New York comme à Boston, et passé mes journées auprès de photographes de
+              mode et d’éditorial, dont certains signent pour <em>Vogue Italia</em>. J’ai appris auprès d’eux qu’une
+              image se décide bien avant d’être prise, et qu’un geste peut être guidé sans jamais cesser d’être vrai.
+            </p>
+            <p>
+              La ville m’a appris le reste&nbsp;: cette façon de célébrer les mariages qu’on n’ose pas toujours en
+              France, où l’on laisse la journée se dérouler sans jamais la contraindre.
+            </p>
+          </div>
+        </div>
+
+        <p class="display ny__closing" data-reveal>
+          Je suis rentrée avec les deux. <em>L’émotion prise sur le vif, et l’exigence d’une image composée.</em>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================== FINE ART / TRUE EMOTIONS -->
+  <section class="values section" aria-labelledby="values-title">
+    <div class="container">
+      <div class="values__head">
+        <p class="eyebrow" aria-hidden="true">Valeurs</p>
+        <h2 id="values-title" class="visually-hidden">Valeurs : <span lang="en">fine art, true emotions</span></h2>
+      </div>
+
+      <div class="values__grid">
+        <div class="values__col values__col--left">
+          <figure class="values__figure" data-reveal="image">
+            <Photo photo={fineArtPhoto} sizes="(min-width: 64em) 30vw, 44vw" cover position="50% 60%" />
+          </figure>
+          <h3 class="caps values__title" lang="en" data-reveal>Fine art</h3>
+          <ul class="values__list">
+            {fineArt.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+
+        <div class="values__axis" aria-hidden="true"></div>
+
+        <div class="values__col values__col--right">
+          <figure class="values__figure" data-reveal="image" style="--delay: 0.12s">
+            <Photo photo={emotionsPhoto} sizes="(min-width: 64em) 30vw, 44vw" cover position="50% 55%" />
+          </figure>
+          <h3 class="caps values__title" lang="en" data-reveal style="--delay: 0.12s">True emotions</h3>
+          <ul class="values__list">
+            {trueEmotions.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    photo={ctaPhoto}
+    position="50% 62%"
+    links={[
+      { href: '/contact/', label: 'Me contacter' },
+      { href: '/portfolio/', label: 'Voir le portfolio' },
+    ]}
+  />
+</BaseLayout>
+
+<style>
+  /* ============================================================ INTRO */
+
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .about__media {
+    aspect-ratio: 4 / 5;
+    max-height: 82svh;
+    overflow: hidden;
+    background: var(--paper-deep);
+  }
+
+  .about__text {
+    padding: var(--space-xl) var(--gutter) var(--space-2xl);
+  }
+
+  .about__title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    margin-bottom: var(--space-l);
+  }
+
+  .about__heading {
+    font-size: clamp(2.6rem, 1.4rem + 5vw, 6rem);
+  }
+
+  .about__prose {
+    max-width: 36rem;
+  }
+
+  .about__lead {
+    margin-bottom: 1.4em;
+  }
+
+  @supports (initial-letter: 2) or (-webkit-initial-letter: 2) {
+    .about__lead::first-letter {
+      -webkit-initial-letter: 2;
+      initial-letter: 2;
+      margin-right: 0.14em;
+      font-weight: 400;
+    }
+  }
+
+  .prose .about__name {
+    margin-block: 1.4em 1.2em;
+    font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3.1rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+
+  @media (min-width: 64em) {
+    .about {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .about__media {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      max-height: none;
+      aspect-ratio: auto;
+    }
+
+    .about__text {
+      padding: clamp(3rem, 9vh, 7rem) clamp(2rem, 6vw, 7rem) var(--space-2xl);
+    }
+  }
+
+  /* ========================================================= NEW YORK */
+
+  .ny {
+    padding-block: var(--space-xl);
+  }
+
+  .ny__frame {
+    padding: var(--space-xl) 0;
+    border-block: 1px solid var(--on-dark-line);
+  }
+
+  .ny__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.35em;
+    margin-bottom: var(--space-xl);
+    font-size: clamp(2.8rem, 0.8rem + 8.6vw, 11rem);
+    line-height: 0.95;
+  }
+
+  .ny__city {
+    letter-spacing: 0.08em;
+  }
+
+  .ny__year {
+    font-family: var(--serif);
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+
+  .ny__body {
+    display: grid;
+    gap: var(--space-l) var(--gap);
+  }
+
+  .ny__cols p {
+    color: rgb(247 245 240 / 0.86);
+  }
+
+  .ny__closing {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-l);
+    border-top: 1px solid var(--on-dark-line);
+    font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.6rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  @media (min-width: 48em) {
+    .ny__cols {
+      columns: 2;
+      column-gap: var(--gap);
+    }
+
+    .ny__cols p {
+      break-inside: avoid;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .ny__body {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .ny__lead {
+      grid-column: 1 / span 4;
+    }
+
+    .ny__cols {
+      grid-column: 6 / -1;
+    }
+
+    .ny__closing {
+      margin-left: calc((100% + var(--gap)) * 5 / 12);
+    }
+  }
+
+  /* ======================================== FINE ART / TRUE EMOTIONS */
+
+  .values__head {
+    display: flex;
+    justify-content: center;
+    padding-bottom: var(--space-l);
+  }
+
+  .values__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+    grid-template-rows: repeat(9, auto);
+    column-gap: clamp(0.9rem, 4vw, 4.5rem);
+  }
+
+  .values__col {
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-rows: subgrid;
+  }
+
+  .values__col--left {
+    grid-column: 1;
+    text-align: right;
+  }
+
+  .values__col--right {
+    grid-column: 3;
+  }
+
+  .values__axis {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    background: var(--line-strong);
+  }
+
+  .values__figure {
+    width: min(100%, 26rem);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    margin-bottom: var(--space-l);
+  }
+
+  .values__col--left .values__figure {
+    justify-self: end;
+  }
+
+  .values__title {
+    align-self: end;
+    padding-bottom: 1.1rem;
+    font-size: clamp(1.35rem, 0.7rem + 3.2vw, 4.25rem);
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .values__list {
+    grid-row: 3 / -1;
+    display: grid;
+    grid-template-rows: subgrid;
+  }
+
+  .values__list li {
+    display: flex;
+    align-items: center;
+    padding-block: clamp(0.6rem, 1.4vw, 1.05rem);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--serif);
+    font-size: clamp(1rem, 0.85rem + 0.95vw, 1.75rem);
+    font-style: italic;
+    line-height: 1.2;
+  }
+
+  .values__col--left .values__list li {
+    justify-content: flex-end;
+  }
+</style>

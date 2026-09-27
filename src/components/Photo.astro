@@ -1,0 +1,41 @@
+---
+/**
+ * Photo optimisée : WebP en plusieurs largeurs + JPEG de secours,
+ * chargement différé et dimensions réservées (aucun saut de mise en page).
+ */
+import { optimize, type Photo } from '../lib/photos';
+
+interface Props {
+  photo: Photo;
+  /** Largeur d'affichage, ex. "(min-width: 64em) 50vw, 100vw". */
+  sizes: string;
+  /** Photo visible dès l'arrivée sur la page (chargée en priorité). */
+  priority?: boolean;
+  /** La photo remplit son conteneur (recadrage). */
+  cover?: boolean;
+  /** Point focal du recadrage, ex. "50% 30%". */
+  position?: string;
+  /** Texte alternatif différent de celui du catalogue ("" pour une image décorative). */
+  alt?: string;
+  class?: string;
+}
+
+const { photo, sizes, priority = false, cover = false, position, alt, class: className } = Astro.props;
+const img = await optimize(photo);
+---
+
+<picture class:list={['photo', { 'photo--cover': cover }, className]}>
+  <source type="image/webp" srcset={img.webpSrcset} sizes={sizes} />
+  <img
+    src={img.jpgSrc}
+    srcset={img.jpgSrcset}
+    sizes={sizes}
+    width={photo.width}
+    height={photo.height}
+    alt={alt ?? photo.alt}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding={priority ? 'sync' : 'async'}
+    fetchpriority={priority ? 'high' : undefined}
+    style={position ? `object-position: ${position}` : undefined}
+  />
+</picture>

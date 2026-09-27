@@ -1,0 +1,137 @@
+---
+import '@fontsource-variable/bodoni-moda/opsz.css';
+import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+import '@fontsource-variable/jost/wght.css';
+import '../styles/global.css';
+import bodoniUrl from '@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2?url';
+import jostUrl from '@fontsource-variable/jost/files/jost-latin-wght-normal.woff2?url';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE, isPlaceholder } from '../config';
+import { link } from '../lib/url';
+
+interface Props {
+  /** Titre de l'onglet et des partages (≈ 60 caractères max). */
+  title: string;
+  /** Description pour Google et les partages (≈ 155 caractères max). */
+  description: string;
+  /** En-tête transparent posé sur une photo plein écran. */
+  headerOverlay?: boolean;
+  noindex?: boolean;
+}
+
+const { title, description, headerOverlay = false, noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const home = new URL(link('/'), Astro.site);
+const ogImage = new URL(link('/brand/og-image.jpg'), Astro.site);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: SITE.name,
+  description: SITE.description,
+  url: home.href,
+  image: ogImage.href,
+  logo: new URL(link('/brand/logo-black.png'), Astro.site).href,
+  slogan: SITE.tagline,
+  founder: { '@type': 'Person', name: SITE.photographer, jobTitle: 'Photographe de mariage' },
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: SITE.city,
+    addressRegion: SITE.region,
+    addressCountry: 'FR',
+  },
+  areaServed: ['Toulouse', 'Occitanie', 'Sud-Ouest'],
+  sameAs: [SITE.instagram.url],
+  ...(isPlaceholder(SITE.email) ? {} : { email: SITE.email }),
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="author" content={SITE.photographer} />
+    <meta name="theme-color" content="#f7f5f0" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="icon" type="image/png" sizes="48x48" href={link('/brand/favicon-48.png')} />
+    <link rel="icon" type="image/png" sizes="192x192" href={link('/brand/favicon-192.png')} />
+    <link rel="apple-touch-icon" href={link('/brand/apple-touch-icon.png')} />
+    <link rel="sitemap" href={link('/sitemap-index.xml')} />
+
+    <link rel="preload" href={bodoniUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={jostUrl} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Niveal Studio, photographe de mariage à Toulouse — une mariée voilée, en couleur et en noir et blanc." />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!window.__nivealReady) document.documentElement.classList.add('reveal-off');
+      }, 3000);
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <Header overlay={headerOverlay} />
+    <main id="contenu" tabindex="-1" class:list={{ 'main--offset': !headerOverlay }}>
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 100;
+    padding: 0.8rem 1.2rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transform: translateY(-200%);
+    transition: transform 0.3s var(--ease);
+  }
+
+  .skip-link:focus-visible {
+    transform: none;
+  }
+
+  main:focus {
+    outline: none;
+  }
+
+  .main--offset {
+    padding-top: var(--header-h);
+  }
+
+  html.is-locked {
+    overflow: hidden;
+  }
+</style>
