@@ -21,12 +21,14 @@ export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdekpwwa';
  * Chaque ligne n'apparaît sur le site qu'une fois remplie.
  */
 export const LEGAL = {
+  /** Activité déclarée, ex. « Photographie » */
+  activity: 'Photographie',
   /** Ex. « Entrepreneur individuel (micro-entreprise) » */
-  status: '',
+  status: 'Entrepreneuse individuelle (micro-entreprise)',
   /** Numéro SIRET à 14 chiffres, ex. « 123 456 789 00012 » */
-  siret: '',
+  siret: '981 627 219 00026',
   /** Adresse professionnelle ou de domiciliation, ex. « 12 rue …, 31000 Toulouse » */
-  address: '',
+  address: 'Toulouse, France',
 };
 
 export const SITE = {

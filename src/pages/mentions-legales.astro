@@ -21,6 +21,7 @@ import { LEGAL, SITE } from '../config';
       <h2 class="eyebrow">Éditeur du site</h2>
       <p>
         {SITE.name}, {SITE.photographer}, photographe de mariage<br />
+        {LEGAL.activity && <>Activité&nbsp;: {LEGAL.activity}<br /></>}
         {LEGAL.status && <>Statut&nbsp;: {LEGAL.status}<br /></>}
         {LEGAL.siret && <>SIRET&nbsp;: {LEGAL.siret}<br /></>}
         {LEGAL.address && <>Adresse&nbsp;: {LEGAL.address}<br /></>}
