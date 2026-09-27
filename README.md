@@ -29,26 +29,24 @@ npm run preview   # affiche cette version finale sur http://localhost:4321
 
 ---
 
-## Avant la mise en ligne : l'e-mail et le formulaire
+## Réglages : e-mail, formulaire, mentions légales
 
 Tout se règle dans **`src/config.ts`** :
 
-| Réglage              | Rôle                                                            |
-| -------------------- | --------------------------------------------------------------- |
-| `CONTACT_EMAIL`      | adresse affichée sur la page Contact et dans le pied de page (**à compléter**) |
-| `FORMSPREE_ENDPOINT` | formulaire Formspree (**déjà configuré** : `https://formspree.io/f/xdekpwwa`) |
+| Réglage              | Rôle                                                              |
+| -------------------- | ----------------------------------------------------------------- |
+| `CONTACT_EMAIL`      | adresse affichée sur le site (`anna.aguerre@hotmail.com`)          |
+| `FORMSPREE_ENDPOINT` | formulaire Formspree qui envoie les messages (`…/f/xdekpwwa`)     |
+| `LEGAL`              | statut, SIRET et adresse, affichés dans les mentions légales      |
 
 Le formulaire fonctionne sans serveur grâce à [Formspree](https://formspree.io) :
 les messages arrivent à l'adresse choisie dans le tableau de bord Formspree.
 À la première demande reçue, Formspree peut demander de confirmer le formulaire
 par e-mail : pensez à vérifier la boîte de réception (et les indésirables).
 
-Tant que `CONTACT_EMAIL` contient `A_REMPLACER`, l'adresse n'est simplement pas
-affichée sur le site.
-
-Pensez aussi à compléter les passages surlignés de la page
-**Mentions légales** (`src/pages/mentions-legales.astro`) : statut, SIRET,
-adresse, durée de conservation des messages.
+Dans `LEGAL`, chaque ligne (statut, SIRET, adresse) n'apparaît sur la page
+**Mentions légales** qu'une fois remplie. Ces informations sont obligatoires
+pour un site professionnel : à renseigner avant la mise en ligne.
 
 ---
 
@@ -110,24 +108,47 @@ Couleurs, typographies et espacements : `src/styles/global.css`.
 
 ## Mise en ligne sur GitHub Pages
 
-Le déploiement est automatique à chaque envoi sur la branche `main`
-(fichier `.github/workflows/deploy.yml`).
+La publication est automatique : à chaque envoi sur la branche `main`, GitHub
+reconstruit le site et le met en ligne (fichier `.github/workflows/deploy.yml`).
 
-1. Créez un dépôt sur GitHub (par exemple `niveal-studio`) et envoyez-y le projet :
-   ```bash
-   git remote add origin https://github.com/VOTRE-COMPTE/niveal-studio.git
-   git push -u origin main
-   ```
-2. Sur GitHub : **Settings → Pages → Build and deployment → Source :
-   « GitHub Actions »**.
-3. Le site est publié en quelques minutes à l'adresse
-   `https://VOTRE-COMPTE.github.io/niveal-studio/` (onglet **Actions** pour
-   suivre la publication).
+**Première mise en ligne**
 
-**Nom de domaine** (ex. `nivealstudio.fr`) : renseignez-le dans
-Settings → Pages → Custom domain et suivez les indications de GitHub pour la
-configuration DNS. Rien à modifier dans le code : l'adresse du site, les liens,
-le sitemap et les balises de partage s'adaptent automatiquement.
+1. Créez un compte sur [github.com](https://github.com/signup). Le nom de compte
+   apparaît dans l'adresse du site (`https://NOM-DU-COMPTE.github.io/…`).
+2. Installez [GitHub Desktop](https://desktop.github.com) et connectez-vous
+   avec ce compte.
+3. Dans GitHub Desktop : **File → Add Local Repository…**, choisissez le
+   dossier `Site photo`, puis cliquez sur **Publish repository**.
+   Nom conseillé : `niveal-studio`. **Décochez « Keep this code private »**
+   (avec un compte gratuit, GitHub Pages ne fonctionne qu'avec un dépôt public).
+4. Sur github.com, ouvrez le dépôt : **Settings → Pages → Build and deployment →
+   Source : « GitHub Actions »**.
+5. Onglet **Actions** : la publication démarre (quelques minutes la première
+   fois). Une fois la coche verte affichée, le site est en ligne à l'adresse
+   `https://NOM-DU-COMPTE.github.io/niveal-studio/`.
+
+**Mettre à jour le site ensuite** : après une modification, dans GitHub Desktop,
+écrivez un court résumé en bas à gauche, cliquez sur **Commit to main** puis
+**Push origin**. Le site se met à jour tout seul en quelques minutes.
+
+**Nom de domaine** (ex. `nivealstudio.fr`, acheté chez OVH, Gandi…) :
+
+1. Sur GitHub : Settings → Pages → **Custom domain**, saisissez
+   `www.nivealstudio.fr` puis Save.
+2. Chez le fournisseur du domaine, dans la zone DNS :
+   - un enregistrement **CNAME** `www` → `NOM-DU-COMPTE.github.io`
+   - quatre enregistrements **A** pour le domaine nu (`@`) :
+     `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+3. Une fois le domaine vérifié par GitHub (jusqu'à 24 h), cochez
+   **Enforce HTTPS**.
+
+Rien à modifier dans le code : l'adresse du site, les liens, le sitemap et les
+balises de partage s'adaptent automatiquement.
+
+> Le dépôt étant public, les fichiers de `assets/photos` y sont
+> téléchargeables en pleine résolution (le site, lui, ne publie que des
+> versions allégées). Pour l'éviter : exporter les photos à 2500–3000 px avant
+> de les déposer, ou passer le dépôt en privé avec un abonnement GitHub Pro.
 
 ---
 

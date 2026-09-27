@@ -1,13 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE, isPlaceholder } from '../config';
+import { LEGAL, SITE } from '../config';
 
 /*
- * Mentions légales obligatoires pour un site professionnel (loi LCEN, RGPD).
- * Les passages entre crochets, surlignés sur la page, sont à compléter
- * avec les informations officielles d'Anna avant la mise en ligne.
+ * Mentions légales (loi pour la confiance dans l'économie numérique, RGPD).
+ * Le statut, le SIRET et l'adresse se renseignent dans src/config.ts (LEGAL) ;
+ * chaque ligne n'apparaît qu'une fois remplie.
  */
-const email = isPlaceholder(SITE.email) ? null : SITE.email;
 ---
 
 <BaseLayout
@@ -21,11 +20,11 @@ const email = isPlaceholder(SITE.email) ? null : SITE.email;
     <section>
       <h2 class="eyebrow">Éditeur du site</h2>
       <p>
-        {SITE.name}, {SITE.photographer}, photographe<br />
-        Statut&nbsp;: <mark>[à compléter, par exemple entrepreneur individuel]</mark><br />
-        SIRET&nbsp;: <mark>[à compléter]</mark><br />
-        Adresse&nbsp;: <mark>[à compléter]</mark>, Toulouse<br />
-        Contact&nbsp;: {email ? <a class="underline" href={`mailto:${email}`}>{email}</a> : <mark>[adresse e-mail]</mark>}
+        {SITE.name}, {SITE.photographer}, photographe de mariage<br />
+        {LEGAL.status && <>Statut&nbsp;: {LEGAL.status}<br /></>}
+        {LEGAL.siret && <>SIRET&nbsp;: {LEGAL.siret}<br /></>}
+        {LEGAL.address && <>Adresse&nbsp;: {LEGAL.address}<br /></>}
+        E-mail&nbsp;: <a class="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>
       </p>
       <p>Directrice de la publication&nbsp;: {SITE.photographer}.</p>
     </section>
@@ -33,17 +32,22 @@ const email = isPlaceholder(SITE.email) ? null : SITE.email;
     <section>
       <h2 class="eyebrow">Hébergement</h2>
       <p>
-        Site hébergé par GitHub Pages, service de GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107,
-        États-Unis.
+        Site hébergé par GitHub Pages, un service de GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco,
+        CA 94107, États-Unis (github.com).
       </p>
     </section>
 
     <section>
       <h2 class="eyebrow">Propriété intellectuelle</h2>
       <p>
-        Les photographies et les textes de ce site sont la propriété exclusive de {SITE.photographer} ({SITE.name}).
-        Toute reproduction, représentation ou diffusion, totale ou partielle, sans autorisation écrite préalable est
-        interdite.
+        Toutes les photographies de ce site sont l’œuvre d’{SITE.photographer} et sont protégées par le droit d’auteur.
+        Les textes, le logo et la mise en page sont la propriété de {SITE.name}. Toute reproduction, représentation,
+        modification ou diffusion, totale ou partielle, sans autorisation écrite préalable est interdite, y compris
+        sur les réseaux sociaux.
+      </p>
+      <p>
+        <!-- prettier-ignore -->
+        Si vous figurez sur une photo et souhaitez qu’elle soit retirée, il suffit d’écrire à <a class="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       </p>
     </section>
 
@@ -51,23 +55,29 @@ const email = isPlaceholder(SITE.email) ? null : SITE.email;
       <h2 class="eyebrow">Données personnelles</h2>
       <p>
         Les informations envoyées par le formulaire de contact (nom, prénom, adresse e-mail, date et lieu du mariage,
-        message) servent uniquement à répondre à votre demande. Elles transitent par le service Formspree, ne sont ni
-        vendues ni cédées à des tiers, et sont conservées le temps nécessaire au suivi de votre demande
-        <mark>[durée à préciser, par exemple trois ans après le dernier échange]</mark>.
+        message) sont utilisées uniquement pour répondre à votre demande et, si vous le souhaitez, préparer une
+        proposition. Elles ne sont destinées qu’à {SITE.photographer}, ne sont ni vendues ni cédées, et ne servent à
+        aucune prospection.
+      </p>
+      <p>
+        L’envoi du formulaire est assuré par le service Formspree (Formspree, Inc., États-Unis)&nbsp;: vos données
+        peuvent donc transiter et être conservées aux États-Unis le temps de leur transmission. Elles sont gardées
+        au maximum trois ans après notre dernier échange, puis supprimées.
       </p>
       <p>
         Conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés,
-        vous disposez d’un droit d’accès, de rectification, d’effacement et d’opposition sur vos données. Pour
-        l’exercer, écrivez à {email ? <a class="underline" href={`mailto:${email}`}>{email}</a> : <mark>[adresse e-mail]</mark>}.
-        Vous pouvez également adresser une réclamation à la CNIL (cnil.fr).
+        vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation et d’opposition sur vos
+        données. Pour l’exercer, écrivez à <a class="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>. Vous
+        pouvez également adresser une réclamation à la CNIL (cnil.fr).
       </p>
     </section>
 
     <section>
       <h2 class="eyebrow">Cookies</h2>
       <p>
-        Ce site ne dépose aucun cookie publicitaire ni de mesure d’audience. Les polices de caractères sont hébergées
-        sur le site lui-même&nbsp;: aucune donnée n’est transmise à des services tiers pendant votre visite.
+        Ce site ne dépose aucun cookie, ni publicitaire ni de mesure d’audience. Les polices de caractères sont
+        hébergées sur le site lui-même&nbsp;: aucune donnée n’est transmise à des services tiers pendant votre visite.
+        Les liens vers Instagram mènent à un site externe, soumis à ses propres conditions.
       </p>
     </section>
   </article>
@@ -101,11 +111,5 @@ const email = isPlaceholder(SITE.email) ? null : SITE.email;
 
   .legal p + p {
     margin-top: 0.9em;
-  }
-
-  mark {
-    background: #f3e3b3;
-    color: var(--ink);
-    padding: 0 0.2em;
   }
 </style>

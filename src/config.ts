@@ -1,17 +1,13 @@
 /**
  * Réglages généraux du site.
  *
- * ┌──────────────────────────────────────────────────────────────────────┐
- * │  CONTACT_EMAIL      → l'adresse e-mail d'Anna (À COMPLÉTER)          │
- * │  FORMSPREE_ENDPOINT → le formulaire Formspree (configuré)            │
- * │                                                                      │
- * │  Tant que CONTACT_EMAIL contient « A_REMPLACER », l'adresse n'est    │
- * │  pas affichée sur le site (le formulaire, lui, fonctionne).          │
- * └──────────────────────────────────────────────────────────────────────┘
+ *   CONTACT_EMAIL      → l'adresse e-mail d'Anna (page Contact, pied de page)
+ *   FORMSPREE_ENDPOINT → le formulaire Formspree qui envoie les messages
+ *   LEGAL              → statut, SIRET et adresse (page Mentions légales)
  */
 
 /** Adresse e-mail d'Anna — affichée sur la page Contact et dans le pied de page. */
-export const CONTACT_EMAIL = 'A_REMPLACER@exemple.fr';
+export const CONTACT_EMAIL = 'anna.aguerre@hotmail.com';
 
 /**
  * Adresse du formulaire Formspree (https://formspree.io), de la forme
@@ -19,6 +15,19 @@ export const CONTACT_EMAIL = 'A_REMPLACER@exemple.fr';
  * que l'on choisit l'adresse qui reçoit les messages.
  */
 export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdekpwwa';
+
+/**
+ * Informations légales affichées sur la page Mentions légales.
+ * Chaque ligne n'apparaît sur le site qu'une fois remplie.
+ */
+export const LEGAL = {
+  /** Ex. « Entrepreneur individuel (micro-entreprise) » */
+  status: '',
+  /** Numéro SIRET à 14 chiffres, ex. « 123 456 789 00012 » */
+  siret: '',
+  /** Adresse professionnelle ou de domiciliation, ex. « 12 rue …, 31000 Toulouse » */
+  address: '',
+};
 
 export const SITE = {
   name: 'Niveal Studio',
