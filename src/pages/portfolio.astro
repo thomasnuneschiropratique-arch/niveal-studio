@@ -1,10 +1,10 @@
 ---
-import CtaBand from '../components/CtaBand.astro';
 import GalleryItem from '../components/GalleryItem.astro';
 import Lightbox from '../components/Lightbox.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { buildRows, sizesFor } from '../lib/layout';
-import { getChapters, getPhoto, unusedPhotoFiles } from '../lib/photos';
+import { getChapters, unusedPhotoFiles } from '../lib/photos';
+import { link } from '../lib/url';
 
 const chapters = getChapters().map((chapter) => {
   const [first, ...rest] = chapter.title.split(' ');
@@ -20,7 +20,6 @@ if (unused.length) {
   );
 }
 
-const ctaPhoto = getPhoto('image00062.jpeg');
 ---
 
 <BaseLayout
@@ -95,14 +94,11 @@ const ctaPhoto = getPhoto('image00062.jpeg');
     ))
   }
 
-  <CtaBand
-    photo={ctaPhoto}
-    position="50% 62%"
-    links={[
-      { href: '/contact/', label: 'Me contacter' },
-      { href: '/a-propos/', label: 'Qui je suis' },
-    ]}
-  />
+  <section class="pf-contact" aria-label="Contact">
+    <a class="button pf-contact__button" href={link('/contact/')}>
+      Me contacter <span aria-hidden="true">→</span>
+    </a>
+  </section>
 
   <Lightbox />
 </BaseLayout>
@@ -271,6 +267,30 @@ const ctaPhoto = getPhoto('image00062.jpeg');
     .pf-line {
       display: contents;
     }
+  }
+
+  /* =========================================================== CONTACT */
+
+  .pf-contact {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-xl) var(--gutter) var(--space-2xl);
+  }
+
+  .pf-contact__button {
+    gap: 1.1rem;
+    padding-inline: clamp(2rem, 4vw, 3.25rem);
+    font-size: 0.78rem;
+  }
+
+  .pf-contact__button span {
+    font-size: 1rem;
+    letter-spacing: 0;
+    transition: translate 0.5s var(--ease);
+  }
+
+  .pf-contact__button:hover span {
+    translate: 0.3rem 0;
   }
 
   /* ========================================================= INTERLUDE */
