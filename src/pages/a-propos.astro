@@ -1,14 +1,13 @@
 ---
-import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config';
 import { getPhoto } from '../lib/photos';
+import { link } from '../lib/url';
 
 const portrait = getPhoto('portrait-anna.jpg');
 const fineArtPhoto = getPhoto('image00027.jpeg');
 const emotionsPhoto = getPhoto('couple-baiser-ombrelles.jpg');
-const ctaPhoto = getPhoto('image00062.jpeg');
 
 const fineArt = [
   'l’esthétique',
@@ -31,7 +30,7 @@ const trueEmotions = [
 ---
 
 <BaseLayout
-  title="À propos — Anna Aguerre, photographe de mariage à Toulouse"
+  title="À propos | Anna Aguerre, photographe de mariage à Toulouse"
   description="Anna Aguerre, photographe de mariage à Toulouse : de son premier appareil, acheté à dix ans, à une année à New York auprès de photographes de mode."
 >
   <!-- ============================================================ INTRO -->
@@ -48,7 +47,7 @@ const trueEmotions = [
 
     <div class="about__text">
       <h1 id="about-title" class="about__title">
-        <span class="eyebrow about__kicker">À propos — {SITE.photographer}, photographe de mariage</span>
+        <span class="eyebrow about__kicker">{SITE.photographer}, photographe de mariage</span>
         <span class="caps about__heading">Qui je suis</span>
       </h1>
 
@@ -83,30 +82,29 @@ const trueEmotions = [
   <section class="ny theme-dark" aria-labelledby="ny-title">
     <div class="container">
       <div class="ny__frame">
-        <h2 id="ny-title" class="ny__title" data-reveal>
+        <h2 id="ny-title" class="serif-title ny__title" data-reveal>
           <span class="caps ny__city">New York,</span>
           <span class="ny__year">2024</span>
         </h2>
 
-        <div class="ny__body prose">
-          <p class="lead ny__lead" data-reveal>
+        <!-- Texte sur deux colonnes équilibrées automatiquement. -->
+        <div class="ny__body prose" data-reveal>
+          <p class="lead ny__lead">
             En 2024, je suis partie vivre un an à New York, dans l’<span lang="en">Upper East Side</span>.
           </p>
-          <div class="ny__cols" data-reveal>
-            <p>
-              Cette ville ne laisse personne intact. On y croise en une saison ce qu’on mettrait des années à
-              rencontrer ailleurs.
-            </p>
-            <p>
-              J’ai photographié des couples, à New York comme à Boston, et passé mes journées auprès de photographes de
-              mode et d’éditorial, dont certains signent pour <em>Vogue Italia</em>. J’ai appris auprès d’eux qu’une
-              image se décide bien avant d’être prise, et qu’un geste peut être guidé sans jamais cesser d’être vrai.
-            </p>
-            <p>
-              La ville m’a appris le reste&nbsp;: cette façon de célébrer les mariages qu’on n’ose pas toujours en
-              France, où l’on laisse la journée se dérouler sans jamais la contraindre.
-            </p>
-          </div>
+          <p>
+            Cette ville ne laisse personne intact. On y croise en une saison ce qu’on mettrait des années à rencontrer
+            ailleurs.
+          </p>
+          <p>
+            J’ai photographié des couples, à New York comme à Boston, et passé mes journées auprès de photographes de
+            mode et d’éditorial, dont certains signent pour <em>Vogue Italia</em>. J’ai appris auprès d’eux qu’une image
+            se décide bien avant d’être prise, et qu’un geste peut être guidé sans jamais cesser d’être vrai.
+          </p>
+          <p>
+            La ville m’a appris le reste&nbsp;: cette façon de célébrer les mariages qu’on n’ose pas toujours en France,
+            où l’on laisse la journée se dérouler sans jamais la contraindre.
+          </p>
         </div>
 
         <p class="display ny__closing" data-reveal>
@@ -117,7 +115,7 @@ const trueEmotions = [
   </section>
 
   <!-- ======================================== FINE ART / TRUE EMOTIONS -->
-  <section class="values section" aria-labelledby="values-title">
+  <section class="values section" id="valeurs" aria-labelledby="values-title">
     <div class="container">
       <div class="values__head">
         <p class="eyebrow" aria-hidden="true">Valeurs</p>
@@ -150,14 +148,11 @@ const trueEmotions = [
     </div>
   </section>
 
-  <CtaBand
-    photo={ctaPhoto}
-    position="50% 62%"
-    links={[
-      { href: '/contact/', label: 'Me contacter' },
-      { href: '/portfolio/', label: 'Voir le portfolio' },
-    ]}
-  />
+  <section class="about-contact" aria-label="Contact">
+    <a class="button about-contact__button" href={link('/contact/')}>
+      Me contacter <span aria-hidden="true">→</span>
+    </a>
+  </section>
 </BaseLayout>
 
 <style>
@@ -264,55 +259,68 @@ const trueEmotions = [
     letter-spacing: -0.02em;
   }
 
-  .ny__body {
-    display: grid;
-    gap: var(--space-l) var(--gap);
+  .ny__body p:not(.ny__lead) {
+    color: rgb(247 245 240 / 0.86);
   }
 
-  .ny__cols p {
-    color: rgb(247 245 240 / 0.86);
+  .prose .ny__lead {
+    margin-bottom: 1em;
+    font-size: clamp(1.3rem, 1.1rem + 0.75vw, 1.8rem);
+    line-height: 1.42;
+  }
+
+  /* Deux blocs de texte équilibrés : le navigateur répartit la hauteur. */
+  @media (min-width: 48em) {
+    .ny__body {
+      columns: 2;
+      column-gap: clamp(2.5rem, 6vw, 6.5rem);
+    }
+
+    .ny__body p {
+      orphans: 3;
+      widows: 3;
+    }
   }
 
   .ny__closing {
     margin-top: var(--space-xl);
     padding-top: var(--space-l);
     border-top: 1px solid var(--on-dark-line);
-    font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.6rem);
-    line-height: 1.12;
+    font-size: clamp(2rem, 1.2rem + 3.2vw, 4.4rem);
+    line-height: 1.1;
     letter-spacing: -0.015em;
     text-wrap: balance;
   }
 
-  @media (min-width: 48em) {
-    .ny__cols {
-      columns: 2;
-      column-gap: var(--gap);
-    }
+  /* ============================================================ CONTACT */
 
-    .ny__cols p {
-      break-inside: avoid;
-    }
+  .about-contact {
+    display: flex;
+    justify-content: center;
+    padding: 0 var(--gutter) var(--space-2xl);
   }
 
-  @media (min-width: 64em) {
-    .ny__body {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-    }
+  .about-contact__button {
+    gap: 1.1rem;
+    padding-inline: clamp(2rem, 4vw, 3.25rem);
+    font-size: 0.78rem;
+  }
 
-    .ny__lead {
-      grid-column: 1 / span 4;
-    }
+  .about-contact__button span {
+    font-size: 1rem;
+    letter-spacing: 0;
+    transition: translate 0.5s var(--ease);
+  }
 
-    .ny__cols {
-      grid-column: 6 / -1;
-    }
-
-    .ny__closing {
-      margin-left: calc((100% + var(--gap)) * 5 / 12);
-    }
+  .about-contact__button:hover span {
+    translate: 0.3rem 0;
   }
 
   /* ======================================== FINE ART / TRUE EMOTIONS */
+
+  .values.section {
+    padding-bottom: var(--space-xl);
+  }
 
   .values__head {
     display: flex;

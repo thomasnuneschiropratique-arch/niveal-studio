@@ -23,7 +23,7 @@ const pages = [
       <a class="cta-link" href={link('/contact/')}>Racontez-moi votre mariage</a>
     </div>
 
-    <a class="site-footer__logo" href={link('/')} aria-label={`${SITE.name} — accueil`}>
+    <a class="site-footer__logo" href={link('/')} aria-label={`${SITE.name}, accueil`}>
       <img
         src={link('/brand/logo-white.png')}
         width={logo.width}
@@ -40,7 +40,7 @@ const pages = [
         <p>
           {SITE.photographer}<br />
           Photographe de mariage<br />
-          Toulouse &amp; <span class="nowrap">Sud-Ouest</span>
+<span class="nowrap">Sud-Ouest</span> &amp; <span lang="en">Worldwide</span>
         </p>
       </div>
 
@@ -82,7 +82,7 @@ const pages = [
     </div>
 
     <div class="site-footer__bottom">
-      <p>© {year} {SITE.name} — {SITE.photographer}</p>
+      <p>© {year} {SITE.name}, {SITE.photographer}</p>
       <a class="underline" href={link('/mentions-legales/')}>Mentions légales</a>
     </div>
   </div>
@@ -106,6 +106,8 @@ const pages = [
 
   .site-footer__tagline {
     font-family: var(--serif);
+    font-weight: 430;
+    font-variation-settings: 'opsz' 56;
     font-size: clamp(1.9rem, 1.2rem + 3vw, 3.75rem);
     line-height: 1.05;
     letter-spacing: -0.01em;

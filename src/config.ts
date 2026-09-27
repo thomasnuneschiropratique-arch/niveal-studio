@@ -2,14 +2,11 @@
  * Réglages généraux du site.
  *
  * ┌──────────────────────────────────────────────────────────────────────┐
- * │  À COMPLÉTER AVANT LA MISE EN LIGNE                                  │
+ * │  CONTACT_EMAIL      → l'adresse e-mail d'Anna (À COMPLÉTER)          │
+ * │  FORMSPREE_ENDPOINT → le formulaire Formspree (configuré)            │
  * │                                                                      │
- * │  1. CONTACT_EMAIL      → l'adresse e-mail d'Anna                     │
- * │  2. FORMSPREE_ENDPOINT → l'adresse du formulaire Formspree           │
- * │                                                                      │
- * │  Tant que ces valeurs contiennent « A_REMPLACER », l'adresse e-mail  │
- * │  n'est pas affichée sur le site et le formulaire ouvre la messagerie │
- * │  du visiteur au lieu d'envoyer le message (voir README).             │
+ * │  Tant que CONTACT_EMAIL contient « A_REMPLACER », l'adresse n'est    │
+ * │  pas affichée sur le site (le formulaire, lui, fonctionne).          │
  * └──────────────────────────────────────────────────────────────────────┘
  */
 
@@ -21,7 +18,7 @@ export const CONTACT_EMAIL = 'A_REMPLACER@exemple.fr';
  * « https://formspree.io/f/xxxxxxxx ». C'est dans le tableau de bord Formspree
  * que l'on choisit l'adresse qui reçoit les messages.
  */
-export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/A_REMPLACER';
+export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdekpwwa';
 
 export const SITE = {
   name: 'Niveal Studio',

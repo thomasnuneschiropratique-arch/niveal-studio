@@ -21,8 +21,12 @@ export default function protectOriginals({ photosDir = 'assets/photos' } = {}) {
       'astro:build:done': async ({ dir, logger }) => {
         const outDir = fileURLToPath(dir);
         const assetsDir = path.join(outDir, '_astro');
+        // Le build remplace certains caractères des noms (« & » devient « _ ») : on garde les deux formes.
         const names = new Set(
-          (await fs.readdir(photosDir)).map((file) => file.replace(/\.[^.]+$/, '')),
+          (await fs.readdir(photosDir)).flatMap((file) => {
+            const base = file.replace(/\.[^.]+$/, '');
+            return [base, base.replace(/[^\w.-]/g, '_')];
+          }),
         );
 
         // Nom d'un original copié par Astro : « nom.hash8.ext »

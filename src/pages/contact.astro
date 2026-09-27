@@ -12,7 +12,7 @@ const formReady = !isPlaceholder(SITE.formEndpoint);
 ---
 
 <BaseLayout
-  title="Contact — Photographe de mariage à Toulouse | Niveal Studio"
+  title="Contact | Photographe de mariage à Toulouse, Niveal Studio"
   description="Vous vous mariez ? Racontez à Anna Aguerre, photographe de mariage à Toulouse, votre date, votre lieu et votre histoire."
 >
   <section class="contact" aria-labelledby="contact-title">
@@ -40,7 +40,7 @@ const formReady = !isPlaceholder(SITE.formEndpoint);
         data-ready={formReady ? 'true' : 'false'}
         data-email={showEmail ? SITE.email : ''}
       >
-        <input type="hidden" name="_subject" value="Nouvelle demande — Niveal Studio" />
+        <input type="hidden" name="_subject" value="Nouvelle demande, Niveal Studio" />
         <div class="form__grid">
           <div class="field">
             <label for="nom">Nom <span class="req" aria-hidden="true">*</span></label>
@@ -168,7 +168,7 @@ const formReady = !isPlaceholder(SITE.formEndpoint);
           .filter(([key]) => !key.startsWith('_'))
           .map(([key, value]) => `${key} : ${value}`)
           .join('\n');
-        window.location.href = `mailto:${to}?subject=${encodeURIComponent('Demande — Niveal Studio')}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:${to}?subject=${encodeURIComponent('Demande, Niveal Studio')}&body=${encodeURIComponent(body)}`;
         return;
       }
 

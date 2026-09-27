@@ -1,34 +1,21 @@
 ---
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
-import SectionIndex from '../components/SectionIndex.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config';
 import { getChapters, getPhoto } from '../lib/photos';
 import { link } from '../lib/url';
 
-const hero = {
-  a: getPhoto('mariee-mur-jaune.jpg'),
-  b: getPhoto('image00046.jpeg'),
-};
-
+const hero = getPhoto('mariee-mur-jaune.jpg');
 const approachPhoto = getPhoto('maries-voile-herbe.jpg');
 
-const selection = [
-  'maries-voile-salon-haussmannien.jpg',
-  'couple-decapotable.jpg',
-  'image00059.jpeg',
-  'image00057.jpeg',
-  'image00039.jpeg',
-  'image00021.jpeg',
-].map(getPhoto);
+const selection = ['maries-voile-salon-haussmannien.jpg', 'couple-decapotable.jpg', 'couple-baiser-ombrelles.jpg'].map(
+  getPhoto,
+);
 const selectionSizes = [
-  '(min-width: 1700px) 780px, (min-width: 48em) 47vw, 100vw',
-  '(min-width: 1700px) 520px, (min-width: 48em) 31vw, 84vw',
-  '(min-width: 1700px) 520px, (min-width: 48em) 31vw, 50vw',
-  '(min-width: 1700px) 780px, (min-width: 48em) 47vw, 50vw',
-  '(min-width: 1700px) 1040px, (min-width: 48em) 62vw, 100vw',
-  '(min-width: 1700px) 390px, (min-width: 48em) 24vw, 60vw',
+  '(min-width: 1700px) 650px, (min-width: 48em) 39vw, 100vw',
+  '(min-width: 1700px) 390px, (min-width: 48em) 23vw, 50vw',
+  '(min-width: 1700px) 390px, (min-width: 48em) 23vw, 50vw',
 ];
 
 const chapters = getChapters().map((c) => ({ ...c, coverPhoto: getPhoto(c.cover) }));
@@ -36,26 +23,25 @@ const ctaPhoto = getPhoto('image00027.jpeg');
 const detailsPhoto = getPhoto('image00042.jpeg');
 ---
 
-<BaseLayout
-  title="Photographe de mariage à Toulouse — Niveal Studio"
-  description={SITE.description}
-  headerOverlay
->
+<BaseLayout title="Photographe de mariage à Toulouse | Niveal Studio" description={SITE.description} headerOverlay>
   <!-- ============================================================ HERO -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero__media">
-      <div class="hero__panel hero__panel--a">
-        <Photo photo={hero.a} sizes="(min-width: 48em) 50vw, 100vw" priority cover position="54% 50%" />
-      </div>
-      <div class="hero__panel hero__panel--b">
-        <Photo photo={hero.b} sizes="50vw" cover position="50% 35%" />
-      </div>
+      <Photo
+        photo={hero}
+        sizes="100vw"
+        widths={[640, 1024, 1600, 2400, 3072]}
+        priority
+        cover
+        position="54% 40%"
+      />
     </div>
     <div class="hero__shade" aria-hidden="true"></div>
 
     <div class="hero__content">
       <h1 id="hero-title" class="hero__title">
-        <span class="eyebrow hero__kicker">{SITE.photographer} — Photographe de mariage à Toulouse</span>
+        <!-- prettier-ignore -->
+        <span class="eyebrow hero__kicker">{SITE.photographer} · Photographe de mariage, <span class="nowrap">Sud-Ouest &amp; <span lang="en">Worldwide</span></span></span>
         <span class="caps hero__phrase" lang="en">
           <span class="hero__line" style="--i: 0"><span>Fine art,</span></span>
           <span class="hero__line" style="--i: 1"><span>with true emotions.</span></span>
@@ -69,11 +55,9 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     </a>
   </section>
 
-  <!-- ===================================================== 01 — APPROCHE -->
+  <!-- ========================================================= APPROCHE -->
   <section class="approach section" id="approche" aria-labelledby="approach-title">
     <div class="container approach__grid">
-      <SectionIndex class="approach__index" num="01" label="L’approche" />
-
       <div class="approach__main">
         <h2 id="approach-title" class="display approach__statement" lang="en" data-reveal>
           A shadow to the day, <em>a friend to every guest.</em>
@@ -81,18 +65,19 @@ const detailsPhoto = getPhoto('image00042.jpeg');
 
         <div class="approach__cols">
           <article class="approach__col" data-reveal>
-            <h3 class="eyebrow approach__label"><span class="approach__roman">i.</span> Approche</h3>
+            <h3 class="eyebrow approach__label">Approche</h3>
             <p class="approach__accent" lang="en">Documentary &amp; fine art.</p>
             <p>Une journée telle qu’elle se vit, avec l’exigence d’une image composée.</p>
           </article>
           <article class="approach__col" data-reveal style="--delay: 0.12s">
-            <h3 class="eyebrow approach__label"><span class="approach__roman">ii.</span> Présence</h3>
+            <h3 class="eyebrow approach__label">Présence</h3>
             <p>Discrète du début à la fin, proche de chacun de vos invités.</p>
           </article>
           <article class="approach__col" data-reveal style="--delay: 0.24s">
-            <h3 class="eyebrow approach__label"><span class="approach__roman">iii.</span> Territoire</h3>
+            <h3 class="eyebrow approach__label">Territoire</h3>
             <p>
-              Toulouse &amp; <span class="nowrap">Sud-Ouest</span>. <span lang="en">Destination weddings</span> partout ailleurs.
+              Toulouse &amp; <span class="nowrap">Sud-Ouest</span>. <span lang="en">Destination weddings</span> partout
+              ailleurs.
             </p>
           </article>
         </div>
@@ -104,40 +89,36 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     </div>
   </section>
 
-  <!-- ===================================================== 02 — SÉLECTION -->
+  <!-- ========================================================= SÉLECTION -->
   <section class="selection" aria-labelledby="selection-title">
     <div class="container selection__grid">
-      <div class="selection__head">
-        <SectionIndex num="02" label="Sélection" />
-        <h2 id="selection-title" class="display selection__title" data-reveal>
-          Une journée <em>telle qu’elle se vit</em>
-        </h2>
-      </div>
+      <h2 id="selection-title" class="display selection__title" data-reveal>
+        Une journée <em>telle qu’elle se vit</em>
+      </h2>
 
       {
         selection.map((photo, i) => (
           <figure class={`selection__item selection__item--${i + 1}`} data-reveal="image">
             <Photo photo={photo} sizes={selectionSizes[i]} />
             <figcaption class="selection__caption" aria-hidden="true">
-              <span class="selection__num">N° {String(i + 1).padStart(2, '0')}</span>
+              N° {String(i + 1).padStart(2, '0')}
             </figcaption>
           </figure>
         ))
       }
 
       <div class="selection__foot">
-        <a class="cta-link" href={link('/portfolio/')}>Voir tout le portfolio</a>
+        <a class="button selection__button" href={link('/portfolio/')}>
+          Voir tout le portfolio <span aria-hidden="true">→</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ===================================================== 03 — LA JOURNÉE -->
+  <!-- ======================================================== LA JOURNÉE -->
   <section class="day theme-dark" aria-labelledby="day-title" data-day>
     <div class="container">
-      <div class="day__head">
-        <SectionIndex num="03" label="La journée" />
-        <h2 id="day-title" class="display day__title" data-reveal>En quatre <em>temps</em></h2>
-      </div>
+      <h2 id="day-title" class="display day__title" data-reveal>En quatre <em>temps</em></h2>
 
       <div class="day__body">
         <ol class="day__list">
@@ -170,10 +151,30 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     </div>
   </section>
 
-  <!-- ===================================================== 04 — TÉMOIGNAGES -->
+  <!-- ============================================ RAPPEL DES VALEURS -->
+  <section class="recall" aria-labelledby="recall-title">
+    <div class="container">
+      <h2 id="recall-title" class="visually-hidden">Mes valeurs : <span lang="en">fine art, true emotions</span></h2>
+      <div class="recall__grid">
+        <div class="recall__col recall__col--left" data-reveal>
+          <p class="caps recall__word" lang="en">Fine art</p>
+          <p class="recall__values">l’esthétique, la composition, la lumière</p>
+        </div>
+        <span class="recall__axis" aria-hidden="true"></span>
+        <div class="recall__col" data-reveal style="--delay: 0.12s">
+          <p class="caps recall__word" lang="en">True emotions</p>
+          <p class="recall__values">le réel, la spontanéité, l’imperfection</p>
+        </div>
+      </div>
+      <p class="recall__foot" data-reveal>
+        <a class="cta-link" href={link('/a-propos/#valeurs')}>Mes valeurs</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ======================================================= TÉMOIGNAGES -->
   <section class="words theme-deep section" aria-labelledby="words-title">
     <div class="container">
-      <SectionIndex num="04" label="Témoignages" />
       <h2 id="words-title" class="visually-hidden">Témoignages</h2>
 
       <div class="words__grid">
@@ -235,7 +236,7 @@ const detailsPhoto = getPhoto('image00042.jpeg');
 </BaseLayout>
 
 <script>
-  // Liste « La journée » : la photo suit le chapitre survolé.
+  // Liste « En quatre temps » : la photo suit le chapitre survolé.
   const section = document.querySelector<HTMLElement>('[data-day]');
   if (section) {
     const images = section.querySelectorAll<HTMLElement>('[data-day-img]');
@@ -269,27 +270,7 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     position: absolute;
     inset: 0;
     z-index: -2;
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .hero__panel {
-    position: relative;
     overflow: hidden;
-  }
-
-  .hero__panel--b {
-    display: none;
-  }
-
-  @media (min-width: 48em) {
-    .hero__media {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .hero__panel--b {
-      display: block;
-    }
   }
 
   .hero__shade {
@@ -297,29 +278,14 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     inset: 0;
     z-index: -1;
     background:
-      linear-gradient(180deg, rgb(10 9 8 / 0.42) 0%, rgb(10 9 8 / 0) 24%),
+      linear-gradient(180deg, rgb(10 9 8 / 0.42) 0%, rgb(10 9 8 / 0) 22%),
       linear-gradient(
         0deg,
-        rgb(10 9 8 / 0.74) 0%,
-        rgb(10 9 8 / 0.5) 30%,
-        rgb(10 9 8 / 0.16) 56%,
-        rgb(10 9 8 / 0) 72%
+        rgb(10 9 8 / 0.78) 0%,
+        rgb(10 9 8 / 0.55) 32%,
+        rgb(10 9 8 / 0.18) 58%,
+        rgb(10 9 8 / 0) 74%
       );
-  }
-
-  /* Mobile : une seule photo, claire, derrière le titre → voile un peu plus dense. */
-  @media (max-width: 47.99em) {
-    .hero__shade {
-      background:
-        linear-gradient(180deg, rgb(10 9 8 / 0.42) 0%, rgb(10 9 8 / 0) 22%),
-        linear-gradient(
-          0deg,
-          rgb(10 9 8 / 0.8) 0%,
-          rgb(10 9 8 / 0.58) 34%,
-          rgb(10 9 8 / 0.2) 58%,
-          rgb(10 9 8 / 0) 74%
-        );
-    }
   }
 
   .hero__content {
@@ -345,9 +311,6 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   .hero__phrase {
     display: block;
     font-size: clamp(2.3rem, 0.9rem + 5.2vw, 6.9rem);
-    font-weight: 430;
-    /* dessin un peu moins contrasté que la taille réelle : déliés plus lisibles sur la photo */
-    font-variation-settings: 'opsz' 56;
     letter-spacing: 0.12em;
     line-height: 1.06;
     /* compense l'espacement ajouté après la dernière lettre */
@@ -393,12 +356,8 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .hero__panel :global(img) {
+    .hero__media :global(img) {
       animation: hero-zoom 2.8s var(--ease) both;
-    }
-
-    .hero__panel--b :global(img) {
-      animation-delay: 0.12s;
     }
 
     .hero__kicker {
@@ -482,7 +441,6 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     row-gap: var(--space-l);
   }
 
-  .approach__index,
   .approach__main {
     grid-column: 1 / -1;
   }
@@ -492,9 +450,9 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   }
 
   .approach__statement {
-    font-size: clamp(2.35rem, 1.2rem + 4.3vw, 5.6rem);
-    line-height: 1.02;
-    letter-spacing: -0.022em;
+    font-size: clamp(2.3rem, 1.2rem + 4.1vw, 5.3rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
     text-wrap: balance;
   }
 
@@ -510,18 +468,7 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   }
 
   .approach__label {
-    display: flex;
-    align-items: baseline;
-    gap: 0.9rem;
-    margin-bottom: 1.6rem;
-  }
-
-  .approach__roman {
-    font-family: var(--serif);
-    font-size: 1rem;
-    font-style: italic;
-    letter-spacing: 0;
-    text-transform: none;
+    margin-bottom: 1.4rem;
   }
 
   .approach__col p {
@@ -546,21 +493,14 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   }
 
   @media (min-width: 64em) {
-    .approach__index {
-      grid-column: 1 / span 3;
-      grid-row: 1;
-      align-self: start;
-      padding-top: 1.1rem;
-    }
-
     .approach__main {
       grid-column: 5 / -1;
-      grid-row: 1 / span 2;
+      grid-row: 1;
     }
 
     .approach__figure {
       grid-column: 1 / span 3;
-      grid-row: 2;
+      grid-row: 1;
       align-self: end;
     }
   }
@@ -568,56 +508,40 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   /* =========================================================== SÉLECTION */
 
   .selection {
-    padding-bottom: var(--space-2xl);
+    padding-bottom: var(--space-xl);
   }
 
   .selection__grid {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gap);
-    row-gap: var(--space-l);
-    align-items: start;
-  }
-
-  .selection__head {
-    grid-column: 1 / -1;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-m) var(--gap);
+    align-items: end;
   }
 
   .selection__title {
-    margin-top: var(--space-m);
-    font-size: clamp(2.2rem, 1.3rem + 3.6vw, 4.75rem);
+    grid-column: 1 / -1;
+    font-size: clamp(2.2rem, 1.3rem + 3.4vw, 4.5rem);
     text-wrap: balance;
-  }
-
-  .selection__caption {
-    margin-top: 0.85rem;
-  }
-
-  .selection__num {
-    font-family: var(--serif);
-    font-size: 0.95rem;
-    font-style: italic;
-    color: var(--muted);
   }
 
   .selection__item--1 {
     grid-column: 1 / -1;
   }
+
   .selection__item--2 {
-    grid-column: 3 / -1;
+    grid-column: 1 / 4;
   }
+
   .selection__item--3 {
-    grid-column: 1 / span 6;
+    grid-column: 4 / -1;
   }
-  .selection__item--4 {
-    grid-column: 7 / -1;
-    margin-top: clamp(4rem, 22vw, 12rem);
-  }
-  .selection__item--5 {
-    grid-column: 1 / -1;
-  }
-  .selection__item--6 {
-    grid-column: 6 / -1;
+
+  .selection__caption {
+    margin-top: 0.7rem;
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--muted);
   }
 
   .selection__foot {
@@ -627,51 +551,50 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     padding-top: var(--space-m);
   }
 
+  .selection__button {
+    gap: 1.1rem;
+    padding-inline: clamp(2rem, 4vw, 3.25rem);
+    font-size: 0.78rem;
+  }
+
+  .selection__button span {
+    font-size: 1rem;
+    letter-spacing: 0;
+    transition: translate 0.5s var(--ease);
+  }
+
+  .selection__button:hover span {
+    translate: 0.3rem 0;
+  }
+
   @media (min-width: 48em) {
-    .selection__head {
-      grid-column: 8 / -1;
+    .selection__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .selection__item--1 {
+      grid-column: 1 / span 5;
+      grid-row: 1 / span 2;
+    }
+
+    .selection__title {
+      grid-column: 7 / -1;
       grid-row: 1;
       align-self: start;
     }
 
-    .selection__item--1 {
-      grid-column: 1 / span 6;
-      grid-row: 1 / span 2;
-    }
-
     .selection__item--2 {
-      grid-column: 8 / span 4;
+      grid-column: 7 / span 3;
       grid-row: 2;
-      align-self: end;
     }
 
     .selection__item--3 {
-      grid-column: 2 / span 4;
-      grid-row: 3;
-      margin-top: var(--space-xl);
-    }
-
-    .selection__item--4 {
-      grid-column: 7 / span 6;
-      grid-row: 3;
-      margin-top: clamp(8rem, 18vw, 18rem);
-    }
-
-    .selection__item--5 {
-      grid-column: 1 / span 8;
-      grid-row: 4;
-      margin-top: var(--space-xl);
-    }
-
-    .selection__item--6 {
       grid-column: 10 / span 3;
-      grid-row: 4;
-      align-self: end;
+      grid-row: 2;
     }
 
     .selection__foot {
-      grid-row: 5;
-      justify-content: flex-end;
+      grid-row: 3;
     }
   }
 
@@ -683,16 +606,8 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     overflow: hidden;
   }
 
-  .day__head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-m);
-    margin-bottom: var(--space-xl);
-  }
-
   .day__title {
+    margin-bottom: var(--space-xl);
     font-size: clamp(2rem, 1.3rem + 2.6vw, 3.6rem);
   }
 
@@ -818,6 +733,46 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     }
   }
 
+  /* ================================================== RAPPEL DES VALEURS */
+
+  .recall {
+    padding-block: var(--space-xl);
+  }
+
+  .recall__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+    column-gap: clamp(1rem, 4vw, 4.5rem);
+  }
+
+  .recall__col--left {
+    text-align: right;
+  }
+
+  .recall__axis {
+    background: var(--line-strong);
+  }
+
+  .recall__word {
+    font-size: clamp(1.35rem, 0.7rem + 3.2vw, 4.25rem);
+    letter-spacing: 0.08em;
+  }
+
+  .recall__values {
+    margin-top: 1rem;
+    font-family: var(--serif);
+    font-size: clamp(1rem, 0.85rem + 0.7vw, 1.45rem);
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  .recall__foot {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-l);
+  }
+
   /* ========================================================= TÉMOIGNAGES */
 
   .words__grid {
@@ -825,7 +780,6 @@ const detailsPhoto = getPhoto('image00042.jpeg');
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--gap);
     row-gap: var(--space-l);
-    margin-top: var(--space-xl);
   }
 
   .words__photo {
@@ -840,8 +794,8 @@ const detailsPhoto = getPhoto('image00042.jpeg');
 
   .quote__text {
     font-size: clamp(2rem, 1.1rem + 3.6vw, 4.6rem);
-    line-height: 1.06;
-    letter-spacing: -0.02em;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
     text-wrap: balance;
     hanging-punctuation: first;
   }
@@ -849,13 +803,13 @@ const detailsPhoto = getPhoto('image00042.jpeg');
   .quote__author {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-top: var(--space-m);
   }
 
   .quote__author::before {
     content: '';
-    width: 2.5rem;
+    width: 1rem;
     height: 1px;
     background: currentColor;
     opacity: 0.5;

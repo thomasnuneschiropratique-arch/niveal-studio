@@ -232,10 +232,21 @@ i {
   text-transform: uppercase;
 }
 
+/*
+ * Titres : même dessin que la phrase d'accueil « Fine art, with true emotions. ».
+ * La Bodoni est figée sur une taille optique moyenne (56) au lieu de sa version
+ * « affiche » : déliés plus épais, lecture plus confortable en grand.
+ */
+.caps,
+.display,
+.serif-title {
+  font-family: var(--serif);
+  font-weight: 430;
+  font-variation-settings: 'opsz' 56;
+}
+
 /* Grandes capitales espacées, dans l'esprit du logo. */
 .caps {
-  font-family: var(--serif);
-  font-weight: 400;
   letter-spacing: 0.11em;
   line-height: 1.02;
   text-transform: uppercase;
@@ -243,10 +254,8 @@ i {
 
 /* Titre éditorial en bas de casse, un mot en italique. */
 .display {
-  font-family: var(--serif);
-  font-weight: 400;
-  letter-spacing: -0.012em;
-  line-height: 1.04;
+  letter-spacing: -0.01em;
+  line-height: 1.06;
 }
 
 .display em {
@@ -270,34 +279,6 @@ i {
   margin-top: 1.05em;
 }
 
-/* Index de section : « 01 ── L'approche » */
-.index {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-family: var(--sans);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.26em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.index__num {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  font-style: italic;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.index__rule {
-  width: clamp(2rem, 4vw, 3.5rem);
-  height: 1px;
-  background: currentColor;
-  opacity: 0.45;
-}
-
 /* --------------------------------------------------------------------------
    Liens et boutons
    -------------------------------------------------------------------------- */
@@ -318,7 +299,7 @@ i {
 
 .cta-link::after {
   content: '';
-  width: 2.75rem;
+  width: 1.1rem;
   height: 1px;
   background: currentColor;
   transition: width 0.7s var(--ease);
@@ -326,7 +307,7 @@ i {
 
 .cta-link:hover::after,
 .cta-link:focus-visible::after {
-  width: 4.75rem;
+  width: 2rem;
 }
 
 /* Lien souligné d'un filet qui se dessine au survol. */

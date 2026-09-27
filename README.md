@@ -35,20 +35,16 @@ Tout se règle dans **`src/config.ts`** :
 
 | Réglage              | Rôle                                                            |
 | -------------------- | --------------------------------------------------------------- |
-| `CONTACT_EMAIL`      | adresse affichée sur la page Contact et dans le pied de page    |
-| `FORMSPREE_ENDPOINT` | adresse du formulaire Formspree, de la forme `https://formspree.io/f/xxxxxxxx` |
+| `CONTACT_EMAIL`      | adresse affichée sur la page Contact et dans le pied de page (**à compléter**) |
+| `FORMSPREE_ENDPOINT` | formulaire Formspree (**déjà configuré** : `https://formspree.io/f/xdekpwwa`) |
 
 Le formulaire fonctionne sans serveur grâce à [Formspree](https://formspree.io) :
+les messages arrivent à l'adresse choisie dans le tableau de bord Formspree.
+À la première demande reçue, Formspree peut demander de confirmer le formulaire
+par e-mail : pensez à vérifier la boîte de réception (et les indésirables).
 
-1. créez un compte gratuit sur formspree.io avec l'adresse d'Anna ;
-2. créez un formulaire (« New form ») : c'est ici que l'on choisit **l'adresse
-   qui reçoit les messages** ;
-3. copiez son adresse (`https://formspree.io/f/…`) dans `FORMSPREE_ENDPOINT`.
-
-Tant que les deux valeurs contiennent `A_REMPLACER`, l'adresse e-mail n'est pas
-affichée et le formulaire ne peut rien envoyer (il ouvre la messagerie du
-visiteur si seule l'adresse e-mail est renseignée, sinon il invite à écrire sur
-Instagram).
+Tant que `CONTACT_EMAIL` contient `A_REMPLACER`, l'adresse n'est simplement pas
+affichée sur le site.
 
 Pensez aussi à compléter les passages surlignés de la page
 **Mentions légales** (`src/pages/mentions-legales.astro`) : statut, SIRET,
@@ -68,10 +64,12 @@ Toutes les photos sont décrites dans **`src/data/photos.ts`** :
 
 - **ajouter une photo au portfolio** : déposez le fichier dans `assets/photos/`,
   puis ajoutez une ligne dans le chapitre voulu (préparatifs, cérémonie,
-  portraits, fête), avec une courte description (`alt`) de ce que l'on voit ;
-- **changer l'ordre** : déplacez les lignes ; la mise en page (tailles,
-  décalages, alternance portrait / paysage) se recalcule toute seule ;
-- **mettre une photo en avant** : ajoutez `feature: true` ;
+  couple, réception), avec une courte description (`alt`) de ce que l'on voit ;
+- **changer l'ordre** : déplacez les lignes ; la mise en page se recalcule
+  toute seule : les photos sont regroupées en lignes pleine largeur qui
+  s'emboîtent (même hauteur sur une ligne, portraits et paysages mélangés,
+  jamais de photo isolée) ;
+- **mettre une photo en avant** : ajoutez `feature: true` (sa ligne est plus haute) ;
 - **masquer une photo** sans la supprimer : ajoutez `hidden: true`.
 
 Si un nom de fichier est mal écrit, `npm run dev` / `npm run build` le signale
@@ -82,7 +80,7 @@ de fichier (`getPhoto('…')`) :
 
 | Page     | Fichier                   | Photos utilisées                                         |
 | -------- | ------------------------- | -------------------------------------------------------- |
-| Accueil  | `src/pages/index.astro`   | diptyque d'ouverture, sélection, chapitres, témoignages   |
+| Accueil  | `src/pages/index.astro`   | photo d'ouverture, sélection, chapitres, témoignages      |
 | À propos | `src/pages/a-propos.astro`| portrait d'Anna, diptyque « Fine art / True emotions »   |
 | Contact  | `src/pages/contact.astro` | photo d'accompagnement                                   |
 

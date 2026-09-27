@@ -17,11 +17,13 @@ interface Props {
   position?: string;
   /** Texte alternatif différent de celui du catalogue ("" pour une image décorative). */
   alt?: string;
+  /** Largeurs générées (par défaut : 640, 1024, 1600 et 2400 px). */
+  widths?: number[];
   class?: string;
 }
 
-const { photo, sizes, priority = false, cover = false, position, alt, class: className } = Astro.props;
-const img = await optimize(photo);
+const { photo, sizes, priority = false, cover = false, position, alt, widths, class: className } = Astro.props;
+const img = await optimize(photo, widths);
 ---
 
 <picture class:list={['photo', { 'photo--cover': cover }, className]}>

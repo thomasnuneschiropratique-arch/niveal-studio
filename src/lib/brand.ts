@@ -90,17 +90,19 @@ export async function monogram(size: number): Promise<Buffer> {
     .toBuffer();
 }
 
-/** Image de partage 1200 × 630 : diptyque de la page d'accueil et logo blanc. */
+/** Image de partage 1200 × 630 : la photo d'accueil, recadrée autour de la mariée, et le logo blanc. */
 export async function ogImage(): Promise<Buffer> {
   const W = 1200;
   const H = 630;
-  const half = W / 2;
-  const panel = (file: string, position: string) =>
-    sharp(path.join(PHOTO_DIR, file)).rotate().resize(half, H, { fit: 'cover', position }).toBuffer();
+  // La photo est verticale : on la met à la largeur puis on garde une bande centrée sur la mariée.
+  const resized = await sharp(path.join(PHOTO_DIR, 'mariee-mur-jaune.jpg'))
+    .rotate()
+    .resize({ width: W })
+    .toBuffer({ resolveWithObject: true });
+  const top = Math.max(0, Math.min(resized.info.height - H, Math.round(resized.info.height * 0.42 - H / 2)));
 
-  const [left, right, logo] = await Promise.all([
-    panel('mariee-mur-jaune.jpg', 'centre'),
-    panel('image00046.jpeg', 'north'),
+  const [photo, logo] = await Promise.all([
+    sharp(resized.data).extract({ left: 0, top, width: W, height: H }).toBuffer(),
     sharp(await trimmedLogo('white')).resize({ width: 440 }).toBuffer(),
   ]);
   const shade = Buffer.from(
@@ -109,8 +111,7 @@ export async function ogImage(): Promise<Buffer> {
 
   return sharp({ create: { width: W, height: H, channels: 3, background: INK } })
     .composite([
-      { input: left, left: 0, top: 0 },
-      { input: right, left: half, top: 0 },
+      { input: photo, left: 0, top: 0 },
       { input: shade, left: 0, top: 0 },
       { input: logo, gravity: 'center' },
     ])

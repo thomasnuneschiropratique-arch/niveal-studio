@@ -1,136 +1,117 @@
 import type { Photo } from './photos';
 
 /**
- * Mise en page « magazine » du portfolio.
+ * Mise en page du portfolio : lignes « justifiées ».
  *
- * Les photos sont regroupées en lignes d'une à trois images selon leur
- * orientation, en faisant tourner plusieurs gabarits (duo décalé, triptyque,
- * photo seule à gauche ou à droite, paysage large…) pour éviter la grille
- * uniforme. Le rendu de chaque gabarit est défini dans portfolio.astro.
+ * Les photos sont regroupées en lignes de 2 à 5 images qui occupent toute la
+ * largeur ; dans une ligne, toutes les photos ont la même hauteur (les
+ * portraits sont plus étroits, les paysages plus larges), sans recadrage et
+ * sans photo isolée. La hauteur des lignes varie légèrement d'une ligne à
+ * l'autre pour garder du rythme.
+ *
+ * Sur mobile, chaque ligne est redécoupée : deux portraits côte à côte,
+ * les paysages seuls sur toute la largeur.
  */
 
-export type RowType =
-  | 'feature'
-  | 'duo'
-  | 'duo-rev'
-  | 'trio'
-  | 'solo-left'
-  | 'solo-right'
-  | 'solo-center'
-  | 'wide'
-  | 'll'
-  | 'll-rev'
-  | 'pl'
-  | 'lp';
-
 export interface Row {
-  type: RowType;
   photos: Photo[];
+  /** Somme des rapports largeur / hauteur de la ligne. */
+  sum: number;
+  /** Découpage de la ligne sur mobile. */
+  lines: Photo[][];
 }
 
-const PORTRAIT_CYCLE: RowType[] = ['duo', 'trio', 'solo-right', 'duo-rev', 'solo-left'];
+/**
+ * Somme visée des rapports largeur / hauteur pour chaque ligne :
+ * plus elle est grande, plus la ligne est basse. On alterne pour varier.
+ */
+const TARGETS = [2.5, 3.1, 2.2, 2.8];
+const FEATURE_TARGET = 2;
+
+const total = (photos: Photo[]) => photos.reduce((s, p) => s + p.ratio, 0);
+
+/** Écart à une ligne « confortable » : ni trop haute (somme < 2), ni trop basse (somme > 3,4). */
+const penalty = (photos: Photo[]) => {
+  const sum = total(photos);
+  return sum < 2 ? (2 - sum) * 2 : Math.max(0, sum - 3.4);
+};
 
 export function buildRows(photos: Photo[]): Row[] {
-  const rows: Row[] = [];
-  const isL = (p?: Photo) => !!p && !p.feature && p.orientation === 'landscape';
-  const isP = (p?: Photo) => !!p && !p.feature && p.orientation === 'portrait';
-  let portraitTurn = 0;
-  let landscapeTurn = 0;
-  let pairTurn = 0;
-  let i = 0;
+  const groups: Photo[][] = [];
+  let current: Photo[] = [];
+  let turn = 0;
+  let target = TARGETS[0];
 
-  while (i < photos.length) {
-    const [a, b, c] = [photos[i], photos[i + 1], photos[i + 2]];
+  const close = () => {
+    groups.push(current);
+    current = [];
+    turn++;
+    target = TARGETS[turn % TARGETS.length];
+  };
 
-    if (a.feature) {
-      rows.push({ type: a.orientation === 'landscape' ? 'wide' : 'feature', photos: [a] });
-      i += 1;
-      continue;
+  for (const photo of photos) {
+    if (current.length === 0 && photo.feature) target = FEATURE_TARGET;
+    const sum = total(current);
+    // Ajouter cette photo éloignerait la ligne de sa cible : on la ferme avant.
+    if (current.length >= 2 && Math.abs(sum + photo.ratio - target) > Math.abs(sum - target)) {
+      close();
+      if (photo.feature) target = FEATURE_TARGET;
     }
-
-    if (a.orientation === 'landscape') {
-      if (isL(b)) {
-        rows.push({ type: pairTurn++ % 2 === 0 ? 'll' : 'll-rev', photos: [a, b] });
-        i += 2;
-      } else if (isP(b) && landscapeTurn++ % 2 === 0) {
-        rows.push({ type: 'lp', photos: [a, b] });
-        i += 2;
-      } else {
-        rows.push({ type: 'wide', photos: [a] });
-        i += 1;
-      }
-      continue;
-    }
-
-    // `a` est un portrait.
-    if (isL(b)) {
-      rows.push({ type: 'pl', photos: [a, b] });
-      i += 2;
-      continue;
-    }
-    if (!isP(b)) {
-      rows.push({ type: 'solo-center', photos: [a] });
-      i += 1;
-      continue;
-    }
-
-    const type = PORTRAIT_CYCLE[portraitTurn++ % PORTRAIT_CYCLE.length];
-    if (type === 'trio' && isP(c)) {
-      rows.push({ type, photos: [a, b, c] });
-      i += 3;
-    } else if (type === 'solo-left' || type === 'solo-right') {
-      rows.push({ type, photos: [a] });
-      i += 1;
-    } else {
-      rows.push({ type: type === 'trio' ? 'duo' : type, photos: [a, b] });
-      i += 2;
-    }
+    current.push(photo);
+    if (current.length >= 2 && total(current) >= target) close();
   }
 
-  return rows;
+  if (current.length > 0) groups.push(current);
+
+  // Fin de chapitre : une dernière ligne isolée ou trop haute est fusionnée avec
+  // la précédente, puis les deux sont redécoupées de la façon la plus équilibrée.
+  const last = groups[groups.length - 1];
+  if (groups.length >= 2 && (last.length < 2 || total(last) < 1.8)) {
+    const merged = [...groups[groups.length - 2], ...last];
+    let best: Photo[][] = [merged];
+    let bestPenalty = penalty(merged);
+    for (let k = 2; k <= merged.length - 2; k++) {
+      const option = [merged.slice(0, k), merged.slice(k)];
+      const p = Math.max(...option.map(penalty));
+      if (p < bestPenalty) {
+        bestPenalty = p;
+        best = option;
+      }
+    }
+    groups.splice(-2, 2, ...best);
+  }
+
+  return groups.map((group) => ({ photos: group, sum: total(group), lines: mobileLines(group) }));
+}
+
+function mobileLines(photos: Photo[]): Photo[][] {
+  const lines: Photo[][] = [];
+  for (let i = 0; i < photos.length; ) {
+    const [a, b] = [photos[i], photos[i + 1]];
+    if (a.orientation === 'portrait' && b?.orientation === 'portrait') {
+      lines.push([a, b]);
+      i += 2;
+    } else {
+      lines.push([a]);
+      i += 1;
+    }
+  }
+  return lines;
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Attribut `sizes` : largeur affichée de chaque emplacement                 */
+/*  Attribut `sizes` : largeur réellement affichée de chaque photo            */
 /* -------------------------------------------------------------------------- */
-
-/** Colonnes occupées (sur 12) par chaque emplacement, à partir de la tablette. */
-const COLUMNS: Record<RowType, number[]> = {
-  feature: [8],
-  duo: [6, 4],
-  'duo-rev': [4, 6],
-  trio: [4, 4, 4],
-  'solo-left': [6],
-  'solo-right': [6],
-  'solo-center': [6],
-  wide: [10],
-  ll: [7, 5],
-  'll-rev': [5, 7],
-  pl: [4, 7],
-  lp: [7, 4],
-};
-
-/** Largeur (en % de l'écran) de chaque emplacement sur mobile. */
-const MOBILE: Record<RowType, number[]> = {
-  feature: [100],
-  duo: [50, 50],
-  'duo-rev': [84, 84],
-  trio: [100, 50, 50],
-  'solo-left': [84],
-  'solo-right': [84],
-  'solo-center': [100],
-  wide: [100],
-  ll: [100, 84],
-  'll-rev': [84, 100],
-  pl: [66, 100],
-  lp: [100, 66],
-};
 
 const MAX_CONTAINER = 1560;
 
-export function sizesFor(type: RowType, index: number): string {
-  const cols = COLUMNS[type][index];
-  const wide = Math.round((cols / 12) * MAX_CONTAINER);
-  const vw = Math.round((cols / 12) * 94);
-  return `(min-width: 1700px) ${wide}px, (min-width: 40em) ${vw}vw, ${MOBILE[type][index]}vw`;
+export function sizesFor(photo: Photo, row: Row): string {
+  const share = photo.ratio / row.sum;
+  const line = row.lines.find((l) => l.includes(photo)) ?? [photo];
+  const mobileShare = photo.ratio / total(line);
+  return [
+    `(min-width: 1700px) ${Math.round(share * MAX_CONTAINER)}px`,
+    `(min-width: 40em) ${Math.max(10, Math.round(share * 94))}vw`,
+    `${Math.round(mobileShare * 92)}vw`,
+  ].join(', ');
 }
