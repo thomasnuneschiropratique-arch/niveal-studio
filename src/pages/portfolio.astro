@@ -3,7 +3,7 @@ import GalleryItem from '../components/GalleryItem.astro';
 import Lightbox from '../components/Lightbox.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { buildRows, sizesFor } from '../lib/layout';
-import { getChapters, unusedPhotoFiles } from '../lib/photos';
+import { getChapters, getPhoto, optimize, unusedPhotoFiles } from '../lib/photos';
 import { link } from '../lib/url';
 
 const chapters = getChapters().map((chapter) => {
@@ -11,6 +11,8 @@ const chapters = getChapters().map((chapter) => {
   return { ...chapter, lead: first, accent: rest.join(' '), rows: buildRows(chapter.photos) };
 });
 const total = chapters.reduce((sum, c) => sum + c.photos.length, 0);
+const sharePhoto = getPhoto('maries-voile-salon-haussmannien.jpg');
+const share = await optimize(sharePhoto);
 
 // Rappel au build : photos déposées dans /assets/photos mais pas encore rangées.
 const unused = unusedPhotoFiles();
@@ -25,6 +27,7 @@ if (unused.length) {
 <BaseLayout
   title="Portfolio mariage, Toulouse & Sud-Ouest | Niveal Studio"
   description="Mariages photographiés dans le Sud-Ouest et ailleurs par Anna Aguerre : préparatifs, cérémonie, couple et réception, en couleur et en noir et blanc."
+  image={{ src: share.jpgSrc, width: 1600, height: Math.round(1600 / sharePhoto.ratio), alt: sharePhoto.alt }}
 >
   <section class="pf-intro container" aria-labelledby="pf-title">
     <h1 id="pf-title" class="pf-intro__title">

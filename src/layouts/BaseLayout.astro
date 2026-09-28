@@ -19,24 +19,42 @@ interface Props {
   /** En-tête transparent posé sur une photo plein écran. */
   headerOverlay?: boolean;
   noindex?: boolean;
+  /** Image de partage propre à la page (par défaut : l'image de marque). */
+  image?: { src: string; width: number; height: number; alt: string };
 }
 
-const { title, description, headerOverlay = false, noindex = false } = Astro.props;
+const { title, description, headerOverlay = false, noindex = false, image } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const home = new URL(link('/'), Astro.site);
-const ogImage = new URL(link('/brand/og-image.jpg'), Astro.site);
+const brandImage = new URL(link('/brand/og-image.jpg'), Astro.site);
+const og = image
+  ? { ...image, src: new URL(image.src, Astro.site).href }
+  : {
+      src: brandImage.href,
+      width: 1200,
+      height: 630,
+      alt: 'Niveal Studio, photographe de mariage à Toulouse : une mariée voilée dans un salon aux boiseries jaunes.',
+    };
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
+  '@id': `${home.href}#studio`,
   name: SITE.name,
   description: SITE.description,
   url: home.href,
-  image: ogImage.href,
+  image: brandImage.href,
   logo: new URL(link('/brand/logo-black.png'), Astro.site).href,
   slogan: SITE.tagline,
-  founder: { '@type': 'Person', name: SITE.photographer, jobTitle: 'Photographe de mariage' },
+  founder: {
+    '@type': 'Person',
+    name: SITE.photographer,
+    jobTitle: 'Photographe de mariage',
+    url: new URL(link('/a-propos/'), Astro.site).href,
+    sameAs: [SITE.instagram.url],
+  },
+  knowsAbout: ['Photographie de mariage', 'Photographie documentaire', 'Photographie fine art'],
   address: {
     '@type': 'PostalAddress',
     addressLocality: SITE.city,
@@ -65,6 +83,7 @@ const schema = {
     <link rel="icon" type="image/png" sizes="48x48" href={link('/brand/favicon-48.png')} />
     <link rel="icon" type="image/png" sizes="192x192" href={link('/brand/favicon-192.png')} />
     <link rel="apple-touch-icon" href={link('/brand/apple-touch-icon.png')} />
+    <link rel="manifest" href={link('/brand/manifest.webmanifest')} />
     <link rel="sitemap" href={link('/sitemap-index.xml')} />
 
     <link rel="preload" href={bodoniUrl} as="font" type="font/woff2" crossorigin />
@@ -78,11 +97,11 @@ const schema = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={og.src} />
     <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Niveal Studio, photographe de mariage à Toulouse : une mariée voilée dans un salon aux boiseries jaunes." />
+    <meta property="og:image:width" content={String(og.width)} />
+    <meta property="og:image:height" content={String(og.height)} />
+    <meta property="og:image:alt" content={og.alt} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <script is:inline>

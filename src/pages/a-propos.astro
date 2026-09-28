@@ -2,10 +2,11 @@
 import Photo from '../components/Photo.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config';
-import { getPhoto } from '../lib/photos';
+import { getPhoto, optimize } from '../lib/photos';
 import { link } from '../lib/url';
 
 const portrait = getPhoto('portrait-anna.jpg');
+const share = await optimize(portrait);
 const fineArtPhoto = getPhoto('image00027.jpeg');
 const emotionsPhoto = getPhoto('couple-baiser-ombrelles.jpg');
 
@@ -32,6 +33,7 @@ const trueEmotions = [
 <BaseLayout
   title="À propos | Anna Aguerre, photographe de mariage à Toulouse"
   description="Anna Aguerre, photographe de mariage à Toulouse : de son premier appareil, acheté à dix ans, à une année à New York auprès de photographes de mode."
+  image={{ src: share.jpgSrc, width: 1600, height: Math.round(1600 / portrait.ratio), alt: portrait.alt }}
 >
   <!-- ============================================================ INTRO -->
   <section class="about" aria-labelledby="about-title">
