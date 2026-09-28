@@ -58,7 +58,7 @@
       const link = links[wrap(i)];
       const image = new Image();
       image.sizes = sizesFor(link);
-      image.srcset = link.dataset.srcset ?? '';
+      image.srcset = link.querySelector('source')?.srcset ?? '';
       image.src = link.href;
     };
 
@@ -69,7 +69,7 @@
       img.width = Number(link.dataset.width);
       img.height = Number(link.dataset.height);
       img.sizes = sizesFor(link);
-      img.srcset = link.dataset.srcset ?? '';
+      img.srcset = link.querySelector('source')?.srcset ?? '';
       img.src = link.href;
       img.alt = link.querySelector('img')?.alt ?? '';
       current.textContent = String(index + 1);

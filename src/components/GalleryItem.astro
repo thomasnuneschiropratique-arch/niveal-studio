@@ -21,7 +21,7 @@ const img = await optimize(photo);
     class="pf-item__link"
     href={img.jpgSrc}
     data-lightbox
-    data-srcset={img.webpSrcset}
+    data-astro-prefetch="false"
     data-width={photo.width}
     data-height={photo.height}
     data-chapter={chapter}

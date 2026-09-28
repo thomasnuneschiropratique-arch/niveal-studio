@@ -7,7 +7,7 @@ import protectOriginals from './src/integrations/protect-originals.mjs';
 // Sur GitHub Pages, ces deux valeurs sont fournies automatiquement par le
 // workflow de déploiement (.github/workflows/deploy.yml) : rien à modifier ici,
 // y compris le jour où un nom de domaine personnalisé est branché.
-const site = process.env.SITE_URL || 'https://nivealstudio.github.io';
+const site = process.env.SITE_URL || 'https://nivealstudio.com';
 const base = process.env.BASE_PATH || '/';
 
 export default defineConfig({

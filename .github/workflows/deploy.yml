@@ -34,7 +34,7 @@ jobs:
       - uses: actions/cache@v6
         with:
           path: .astro-cache
-          key: astro-images-${{ hashFiles('assets/**') }}
+          key: astro-images-${{ hashFiles('assets/**', 'astro.config.mjs', 'src/lib/photos.ts') }}
           restore-keys: astro-images-
 
       - run: npm run build

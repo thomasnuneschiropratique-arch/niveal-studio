@@ -5,6 +5,7 @@ import '@fontsource-variable/jost/wght.css';
 import '../styles/global.css';
 import bodoniUrl from '@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2?url';
 import jostUrl from '@fontsource-variable/jost/files/jost-latin-wght-normal.woff2?url';
+import bodoniItalicUrl from '@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-italic.woff2?url';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE, isPlaceholder } from '../config';
@@ -56,7 +57,7 @@ const schema = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    {noindex && <meta name="robots" content="noindex, follow, max-image-preview:large" />}
     <meta name="author" content={SITE.photographer} />
     <meta name="theme-color" content="#f7f5f0" />
     <meta name="format-detection" content="telephone=no" />
@@ -67,7 +68,9 @@ const schema = {
     <link rel="sitemap" href={link('/sitemap-index.xml')} />
 
     <link rel="preload" href={bodoniUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodoniItalicUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={jostUrl} as="font" type="font/woff2" crossorigin />
+    <meta name="robots" content="max-image-preview:large" />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
