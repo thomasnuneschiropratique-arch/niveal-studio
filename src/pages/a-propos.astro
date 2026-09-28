@@ -166,8 +166,8 @@ const trueEmotions = [
   }
 
   .about__media {
-    aspect-ratio: 4 / 5;
-    max-height: 82svh;
+    /* pleine largeur, hauteur bornée : jamais de case isolée dans un coin */
+    height: min(125vw, 82svh);
     overflow: hidden;
     background: var(--paper-deep);
   }
@@ -211,9 +211,10 @@ const trueEmotions = [
     letter-spacing: -0.015em;
   }
 
-  @media (min-width: 64em) {
+  /* Dès la largeur d'une tablette ou d'une fenêtre réduite : portrait fixe à gauche, texte à droite. */
+  @media (min-width: 48em) {
     .about {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
       align-items: start;
     }
 
@@ -221,12 +222,16 @@ const trueEmotions = [
       position: sticky;
       top: 0;
       height: 100svh;
-      max-height: none;
-      aspect-ratio: auto;
     }
 
     .about__text {
-      padding: clamp(3rem, 9vh, 7rem) clamp(2rem, 6vw, 7rem) var(--space-2xl);
+      padding: clamp(3rem, 9vh, 7rem) clamp(2rem, 5vw, 7rem) var(--space-2xl);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .about {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 

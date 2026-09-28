@@ -202,7 +202,8 @@ const formReady = !isPlaceholder(SITE.formEndpoint);
   }
 
   .contact__media {
-    aspect-ratio: 16 / 11;
+    /* pleine largeur, mais jamais plus haute que 60 % de l'écran */
+    height: min(68.75vw, 60svh);
     overflow: hidden;
     background: var(--paper-deep);
   }
@@ -340,7 +341,7 @@ const formReady = !isPlaceholder(SITE.formEndpoint);
     gap: 0.55rem;
   }
 
-  @media (min-width: 64em) {
+  @media (min-width: 56em) {
     .contact {
       grid-template-columns: 5fr 7fr;
       align-items: start;
@@ -350,11 +351,10 @@ const formReady = !isPlaceholder(SITE.formEndpoint);
       position: sticky;
       top: 0;
       height: 100svh;
-      aspect-ratio: auto;
     }
 
     .contact__body {
-      padding: clamp(3rem, 9vh, 7rem) clamp(2rem, 6vw, 7rem) var(--space-2xl);
+      padding: clamp(3rem, 9vh, 7rem) clamp(2rem, 5vw, 7rem) var(--space-2xl);
     }
   }
 </style>
